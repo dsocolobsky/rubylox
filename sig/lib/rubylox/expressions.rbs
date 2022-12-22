@@ -1,0 +1,35 @@
+module Rubylox
+  type expression = GroupingExpression | LiteralExpression | UnaryExpression |
+    BinaryExpression
+
+  class GroupingExpression
+    def initialize: (expression) -> void
+    attr_reader expression: expression
+    def accept: (untyped visitor) -> void
+  end
+
+  class LiteralExpression
+    def initialize: (untyped value) -> void
+    attr_reader value: untyped
+    def accept: (untyped visitor) -> void
+  end
+
+  class UnaryExpression
+    def initialize: (Token operator, expression right) -> void
+
+    attr_reader operator: Token
+    attr_reader right: expression
+
+    def accept: (untyped visitor) -> void
+  end
+
+  class BinaryExpression
+    def initialize: (expression left, Token operator, expression right) -> void
+
+    attr_reader left: expression
+    attr_reader operator: Token
+    attr_reader right: expression
+
+    def accept: (untyped visitor) -> void
+  end
+end

@@ -30,6 +30,7 @@ module Rubylox
         str += " #{expr.accept(self)}"
       end
       str += ')'
+      str
     end
   end
 end

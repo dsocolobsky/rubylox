@@ -1,18 +1,4 @@
 module Rubylox
-  class Token
-    def initialize(type, lexeme, literal, line)
-      @type = type
-      @lexeme = lexeme
-      @literal = literal
-      @line = line
-    end
-    attr_reader :type, :lexeme, :literal, :line
-
-    def to_s
-      "#{@type} #{@lexeme} #{@literal}"
-    end
-  end
-
   class Scanner
     KEYWORDS = {
       'and' => :and, 'class' => :class, 'else' => :else, 'false' => :false,
@@ -131,6 +117,10 @@ module Rubylox
       advance while alphanumeric?(peek)
 
       text = @source[@start...@current]
+      if text.nil?
+        raise 'text is nil'
+      end
+
       type = KEYWORDS[text] || :identifier
       add_token(type)
     end
@@ -166,11 +156,12 @@ module Rubylox
     end
 
     def digit?(c)
-      c >= '0' && c <= '9'
+      c.instance_of?(::String) && c >= '0' && c <= '9'
     end
 
     def alphabetical?(c)
-      (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
+      c.instance_of?(::String) &&
+        ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
     end
 
     def alphanumeric?(c)

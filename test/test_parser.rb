@@ -2,15 +2,9 @@ require 'test_helper'
 require 'rubylox/scanner'
 require 'rubylox/expressions'
 require 'rubylox/parser'
+require 'rubylox/token'
 
 class TestParser < Minitest::Test
-
-  def scan_program(source)
-    tokens = Rubylox::Scanner.new(source).scan_tokens
-    parser = Rubylox::Parser.new(tokens)
-    parser.parse(tokens)
-  end
-
   def test_parse_number
     number = scan_program('42')
 
@@ -96,5 +90,11 @@ class TestParser < Minitest::Test
     assert_equal 4.0, inner.left.value
     assert_equal :minus, inner.operator.type
     assert_equal 3.0, inner.right.value
+  end
+
+  def scan_program(source)
+    tokens = Rubylox::Scanner.new(source).scan_tokens
+    parser = Rubylox::Parser.new(tokens)
+    parser.parse(tokens)
   end
 end

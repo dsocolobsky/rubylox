@@ -2,6 +2,7 @@
 
 require 'test_helper'
 require 'rubylox/scanner'
+require 'rubylox/token'
 
 class TestScanner < Minitest::Test
   def test_scan_simple_tokens
@@ -48,7 +49,6 @@ class TestScanner < Minitest::Test
     scanner.scan_tokens
 
     assert_all_have_type(scanner.tokens, :identifier)
-    assert_equal %i[identifier identifier], scanner.tokens.map(&:type)[0, 2]
   end
 
   def test_keywords

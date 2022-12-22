@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'rubylox/scanner'
+require 'rubylox/token'
 require 'rubylox/expressions'
 require 'rubylox/ast_printer'
 

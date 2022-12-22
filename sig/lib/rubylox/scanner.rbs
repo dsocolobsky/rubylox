@@ -1,0 +1,28 @@
+module Rubylox
+  class Scanner
+    KEYWORDS: ::Hash[::String, ::Symbol]
+
+    def initialize: (String source) -> void
+
+    attr_reader tokens: Array[Token]
+    attr_reader source: String
+    attr_reader start: Integer
+    attr_reader current: Integer
+    attr_reader line: Integer
+
+    def scan_tokens: () -> Array[Token]
+    def scan_token: () -> void
+    def scan_string: () -> void
+    def scan_number: () -> void
+    def scan_identifier: () -> void
+    def advance: () -> (String | nil)
+    def peek: () -> (::String | nil)
+    def peek_next: () -> (::String | nil)
+    def add_token: (::Symbol, ?untyped) -> void
+    def match: (String expected) -> bool
+    def digit?: ((String | Token | nil) c) -> bool
+    def alphabetical?: ((String | Token | nil) c) -> bool
+    def alphanumeric?: ((String | Token | nil) c) -> bool
+    def at_end?: () -> bool
+  end
+end

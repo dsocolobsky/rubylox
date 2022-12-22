@@ -1,0 +1,44 @@
+module Rubylox
+  class Parser
+    attr_reader tokens: Array[Token]
+    attr_reader current: Integer
+
+    def initialize: (untyped tokens) -> void
+
+    def parse: (untyped expression) -> untyped
+
+    def parse_expression: () -> untyped
+
+    def parse_equality: () -> untyped
+
+    def parse_comparison: () -> untyped
+
+    def parse_term: () -> untyped
+
+    def parse_factor: () -> untyped
+
+    def parse_unary: () -> untyped
+
+    def parse_primary: () -> untyped
+
+    def match: (*untyped types) -> (true | false)
+
+    def consume: (untyped `type`, untyped message) -> untyped
+
+    def error: (untyped token, untyped message) -> untyped
+
+    def report: (untyped line, untyped where, untyped message) -> ::String
+
+    def synchronize: () -> (nil | untyped)
+
+    def peek_is?: (untyped `type`) -> (false | untyped)
+
+    def advance: () -> untyped
+
+    def at_end?: () -> untyped
+
+    def peek: () -> untyped
+
+    def previous: () -> untyped
+  end
+end
