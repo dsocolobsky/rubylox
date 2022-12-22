@@ -5,14 +5,6 @@ module Rubylox
     end
 
     attr_reader :type
-
-    def ==(other)
-      @type == other
-    end
-
-    def ===(other)
-      @type == other
-    end
   end
 
   class Token
@@ -30,16 +22,6 @@ module Rubylox
 
     def to_s
       "#{@type} #{@lexeme} #{@literal}"
-    end
-  end
-end
-
-class Symbol
-  def ==(other)
-    if other.class == Rubylox::TokenType
-      other == self
-    else
-      super(other)
     end
   end
 end
