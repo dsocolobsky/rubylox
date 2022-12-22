@@ -4,7 +4,13 @@ module Rubylox
       @type = type
     end
 
+    attr_reader :type
+
     def ==(other)
+      @type == other
+    end
+
+    def ===(other)
       @type == other
     end
   end
@@ -16,7 +22,11 @@ module Rubylox
       @literal = literal
       @line = line
     end
-    attr_reader :type, :lexeme, :literal, :line
+    attr_reader :lexeme, :literal, :line
+
+    def type
+      @type.type
+    end
 
     def to_s
       "#{@type} #{@lexeme} #{@literal}"
