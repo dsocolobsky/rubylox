@@ -8,16 +8,16 @@ class TestScanner < Minitest::Test
     scanner = Rubylox::Scanner.new('(){},.-+;*!<>/=')
     scanner.scan_tokens
 
-    assert_equal %i[LEFT_PAREN RIGHT_PAREN LEFT_BRACE RIGHT_BRACE
-                    COMMA DOT MINUS PLUS SEMICOLON STAR BANG
-                    LESS GREATER SLASH EQUAL], scanner.tokens.map(&:type)
+    assert_equal %i[left_paren right_paren left_brace right_brace
+    comma dot minus plus semicolon star bang less greater slash equal eof],
+                 scanner.tokens.map(&:type)
   end
 
   def test_scan_two_char_tokens
     scanner = Rubylox::Scanner.new('== != <= >=')
     scanner.scan_tokens
 
-    assert_equal %i[EQUAL_EQUAL BANG_EQUAL LESS_EQUAL GREATER_EQUAL],
+    assert_equal %i[equal_equal bang_equal less_equal greater_equal eof],
                  scanner.tokens.map(&:type)
   end
 
@@ -25,7 +25,7 @@ class TestScanner < Minitest::Test
     scanner = Rubylox::Scanner.new('= = ! = < = > =')
     scanner.scan_tokens
 
-    assert_equal %i[EQUAL EQUAL BANG EQUAL LESS EQUAL GREATER EQUAL],
+    assert_equal %i[equal equal bang equal less equal greater equal eof],
                  scanner.tokens.map(&:type)
   end
 
@@ -33,23 +33,23 @@ class TestScanner < Minitest::Test
     scanner = Rubylox::Scanner.new('"hello" "world"')
     scanner.scan_tokens
 
-    assert_equal %i[STRING STRING], scanner.tokens.map(&:type)
-    assert_equal %w[hello world], scanner.tokens.map(&:literal)
+    assert_equal %i[string string eof], scanner.tokens.map(&:type)
+    assert_equal %w[hello world], scanner.tokens.map(&:literal)[0, 2]
   end
 
   def test_scan_numbers
     scanner = Rubylox::Scanner.new('123 456')
     scanner.scan_tokens
 
-    assert_equal %i[NUMBER NUMBER], scanner.tokens.map(&:type)
-    assert_equal [123, 456], scanner.tokens.map(&:literal)
+    assert_equal %i[number number eof], scanner.tokens.map(&:type)
+    assert_equal [123, 456], scanner.tokens.map(&:literal)[0, 2]
   end
 
   def test_scan_identifiers
     scanner = Rubylox::Scanner.new('foo bar')
     scanner.scan_tokens
 
-    assert_equal %i[IDENTIFIER IDENTIFIER], scanner.tokens.map(&:type)
+    assert_equal %i[identifier identifier], scanner.tokens.map(&:type)[0, 2]
   end
 
   def test_keywords
@@ -57,7 +57,7 @@ class TestScanner < Minitest::Test
     nil or print return super this true var while')
     scanner.scan_tokens
 
-    assert_equal %i[AND CLASS ELSE FALSE FOR FUN IF NIL OR PRINT
-                    RETURN SUPER THIS TRUE VAR WHILE], scanner.tokens.map(&:type)
+    assert_equal %i[and class else false for fun if nil or print return
+    super this true var while eof], scanner.tokens.map(&:type)
   end
 end

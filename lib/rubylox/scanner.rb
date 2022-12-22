@@ -15,10 +15,10 @@ module Rubylox
 
   class Scanner
     KEYWORDS = {
-      'and' => :AND, 'class' => :CLASS, 'else' => :ELSE, 'false' => :FALSE,
-      'for' => :FOR, 'fun' => :FUN, 'if' => :IF, 'nil' => :NIL, 'or' => :OR,
-      'print' => :PRINT, 'return' => :RETURN, 'super' => :SUPER, 'this' => :THIS,
-      'true' => :TRUE, 'var' => :VAR, 'while' => :WHILE
+      'and' => :and, 'class' => :class, 'else' => :else, 'false' => :false,
+      'for' => :for, 'fun' => :fun, 'if' => :if, 'nil' => :nil, 'or' => :or,
+      'print' => :print, 'return' => :return, 'super' => :super, 'this' => :this,
+      'true' => :true, 'var' => :var, 'while' => :while
     }.freeze
 
     def initialize(source)
@@ -37,7 +37,7 @@ module Rubylox
         scan_token
       end
 
-      # @tokens << Token.new(:EOF, '', nil, @line)
+      @tokens << Token.new(:eof, '', nil, @line)
       @tokens
     end
 
@@ -51,38 +51,38 @@ module Rubylox
       when "\n"
         @line += 1
       when '('
-        add_token(:LEFT_PAREN)
+        add_token(:left_paren)
       when ')'
-        add_token(:RIGHT_PAREN)
+        add_token(:right_paren)
       when '{'
-        add_token(:LEFT_BRACE)
+        add_token(:left_brace)
       when '}'
-        add_token(:RIGHT_BRACE)
+        add_token(:right_brace)
       when ','
-        add_token(:COMMA)
+        add_token(:comma)
       when '.'
-        add_token(:DOT)
+        add_token(:dot)
       when '-'
-        add_token(:MINUS)
+        add_token(:minus)
       when '+'
-        add_token(:PLUS)
+        add_token(:plus)
       when ';'
-        add_token(:SEMICOLON)
+        add_token(:semicolon)
       when '*'
-        add_token(:STAR)
+        add_token(:star)
       when '!'
-        add_token(match('=') ? :BANG_EQUAL : :BANG)
+        add_token(match('=') ? :bang_equal : :bang)
       when '='
-        add_token(match('=') ? :EQUAL_EQUAL : :EQUAL)
+        add_token(match('=') ? :equal_equal : :equal)
       when '<'
-        add_token(match('=') ? :LESS_EQUAL : :LESS)
+        add_token(match('=') ? :less_equal : :less)
       when '>'
-        add_token(match('=') ? :GREATER_EQUAL : :GREATER)
+        add_token(match('=') ? :greater_equal : :greater)
       when '/'
         if match('/') # it's a comment
           advance while peek != "\n" && !at_end? # advance til the end of line
         else
-          add_token(:SLASH)
+          add_token(:slash)
         end
       when '"'
         scan_string
@@ -111,7 +111,7 @@ module Rubylox
       advance # consume the ending "
 
       value = @source[@start + 1...@current - 1] # trim the surrounding "
-      add_token(:STRING, value)
+      add_token(:string, value)
     end
 
     def scan_number
@@ -124,14 +124,14 @@ module Rubylox
       end
 
       value = @source[@start...@current].to_f
-      add_token(:NUMBER, value)
+      add_token(:number, value)
     end
 
     def scan_identifier
       advance while alphanumeric?(peek)
 
       text = @source[@start...@current]
-      type = KEYWORDS[text] || :IDENTIFIER
+      type = KEYWORDS[text] || :identifier
       add_token(type)
     end
 
