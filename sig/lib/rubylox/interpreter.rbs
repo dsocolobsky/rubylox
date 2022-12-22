@@ -1,0 +1,11 @@
+module Rubylox
+  class Interpreter
+    def interpret: (expression) -> String
+    def visit_literal_expression: (LiteralExpression) -> untyped
+    def visit_grouping_expression: (GroupingExpression) -> untyped
+    def visit_unary_expression: (UnaryExpression) -> untyped
+    def visit_binary_expression: (BinaryExpression) -> untyped
+    def evaluate: (expression) -> untyped
+    def is_truthy: (untyped object) -> bool
+  end
+end
