@@ -5,39 +5,36 @@ require 'rubylox/parser'
 
 class TestParser < Minitest::Test
 
-  def test_parse_number
-    tokens = Rubylox::Scanner.new('42').scan_tokens
+  def scan_program(source)
+    tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)
+    parser.parse(tokens)
+  end
 
-    res = parser.parse(tokens)
-    assert_instance_of Rubylox::LiteralExpression, res
-    assert_equal 42.0, res.value
+  def test_parse_number
+    number = scan_program('42')
+
+    assert_instance_of Rubylox::LiteralExpression, number
+    assert_equal 42.0, number.value
   end
 
   def test_parse_decimal_number
-    tokens = Rubylox::Scanner.new('3.14').scan_tokens
-    parser = Rubylox::Parser.new(tokens)
+    number = scan_program('3.14')
 
-    res = parser.parse(tokens)
-    assert_instance_of Rubylox::LiteralExpression, res
-    assert_equal 3.14, res.value
+    assert_instance_of Rubylox::LiteralExpression, number
+    assert_equal 3.14, number.value
   end
 
   def test_parse_unary
-    tokens = Rubylox::Scanner.new('!1').scan_tokens
-    parser = Rubylox::Parser.new(tokens)
+    neg_one = scan_program('!1')
 
-    res = parser.parse(tokens)
-    assert_instance_of Rubylox::UnaryExpression, res
-    assert_equal :bang, res.operator.type
-    assert_equal 1.0, res.right.value
+    assert_instance_of Rubylox::UnaryExpression, neg_one
+    assert_equal :bang, neg_one.operator.type
+    assert_equal 1.0, neg_one.right.value
   end
 
   def test_parse_double_negation
-    tokens = Rubylox::Scanner.new('!!bar').scan_tokens
-    parser = Rubylox::Parser.new(tokens)
-
-    neg_neg_bar = parser.parse(tokens)
+    neg_neg_bar = scan_program('!!bar')
     assert_instance_of Rubylox::UnaryExpression, neg_neg_bar
     assert_equal :bang, neg_neg_bar.operator.type
 
@@ -48,10 +45,7 @@ class TestParser < Minitest::Test
   end
 
   def test_parse_term
-    tokens = Rubylox::Scanner.new('1 + 2 + 3').scan_tokens
-    parser = Rubylox::Parser.new(tokens)
-
-    sum = parser.parse(tokens)
+    sum = scan_program('1 + 2 + 3')
     assert_instance_of Rubylox::BinaryExpression, sum
     assert_equal :plus, sum.operator.type
     assert_equal 3.0, sum.right.value
@@ -64,10 +58,7 @@ class TestParser < Minitest::Test
   end
 
   def test_parse_factor
-    tokens = Rubylox::Scanner.new('2 * 3 * 9').scan_tokens
-    parser = Rubylox::Parser.new(tokens)
-
-    multiplication = parser.parse(tokens)
+    multiplication = scan_program('2 * 3 * 9')
     assert_instance_of Rubylox::BinaryExpression, multiplication
     assert_equal :star, multiplication.operator.type
     assert_equal 9.0, multiplication.right.value
@@ -79,36 +70,31 @@ class TestParser < Minitest::Test
     assert_equal 3.0,two_times_three.right.value
   end
 
-  def test_parse_grouping
-    tokens = Rubylox::Scanner.new('(42)').scan_tokens
-    parser = Rubylox::Parser.new(tokens)
+  def test_parse_mixed_operations
+    one_plus_two_times_three = scan_program('1 + 2 * 3')
 
-    res = parser.parse(tokens)
-    assert_instance_of Rubylox::GroupingExpression, res
-    assert_equal 42.0, res.expression.value
+    assert_instance_of Rubylox::BinaryExpression, one_plus_two_times_three
+    assert_equal :plus, one_plus_two_times_three.operator.type
+
+    left = one_plus_two_times_three.left
+    assert_instance_of Rubylox::LiteralExpression, left
+    assert_equal 1.0, left.value
+
+    right = one_plus_two_times_three.right
+    assert_instance_of Rubylox::BinaryExpression, right
+    assert_equal :star, right.operator.type
+    assert_equal 2.0, right.left.value
+    assert_equal 3.0, right.right.value
   end
 
-  def test_parse_grouping_complex
-    tokens = Rubylox::Scanner.new('(4 - 3)').scan_tokens
-    parser = Rubylox::Parser.new(tokens)
+  def test_parse_grouping
+    group = scan_program('(4 - 3)')
 
-    res = parser.parse(tokens)
-    assert_instance_of Rubylox::GroupingExpression, res
-    inner = res.expression
+    assert_instance_of Rubylox::GroupingExpression, group
+    inner = group.expression
     assert_instance_of Rubylox::BinaryExpression, inner
     assert_equal 4.0, inner.left.value
     assert_equal :minus, inner.operator.type
     assert_equal 3.0, inner.right.value
-  end
-
-  def test_parse_arithmetic
-    tokens = Rubylox::Scanner.new('1 + 2 * 3').scan_tokens
-    parser = Rubylox::Parser.new(tokens)
-
-    res = parser.parse(tokens)
-    assert_instance_of Rubylox::BinaryExpression, res
-    assert_equal :plus, res.operator.type
-    assert_equal 1.0, res.left.value
-    assert_equal 6.0, res.right.value
   end
 end
