@@ -1,8 +1,27 @@
 module Rubylox
   class Interpreter
 
-    def interpret(expr)
-      evaluate(expr).to_s
+    def interpret(statements)
+      statements.each do |statement|
+        execute(statement)
+      end
+    end
+
+    def execute(statement)
+      statement.accept(self)
+    end
+
+    def visit_expression_statement(stmt)
+      evaluate(stmt.expression)
+    end
+
+    def visit_print_statement(stmt)
+      value = evaluate(stmt.expression)
+      puts value.to_s
+    end
+
+    def visit_function_statement(stmt)
+      raise NotImplementedError
     end
 
     def visit_literal_expression(expr)

@@ -1,6 +1,10 @@
 module Rubylox
   class Interpreter
-    def interpret: (expression) -> String
+    def interpret: (Array[statement]) -> untyped
+    def execute: (statement) -> void
+    def visit_expression_statement: (ExpressionStmt) -> untyped
+    def visit_print_statement: (PrintStmt) -> untyped
+    def visit_function_statement: (FunctionStmt) -> untyped
     def visit_literal_expression: (LiteralExpression) -> untyped
     def visit_grouping_expression: (GroupingExpression) -> untyped
     def visit_unary_expression: (UnaryExpression) -> untyped

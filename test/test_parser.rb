@@ -85,7 +85,7 @@ class TestParser < Minitest::Test
     group = scan_program('(4 - 3)')
 
     assert_instance_of Rubylox::GroupingExpression, group
-    inner = group.expression
+    inner = group.expression.expression
     assert_instance_of Rubylox::BinaryExpression, inner
     assert_equal 4.0, inner.left.value
     assert_equal :minus, inner.operator.type
@@ -95,6 +95,6 @@ class TestParser < Minitest::Test
   def scan_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)
-    parser.parse(tokens)
+    parser.parse[0].expression
   end
 end

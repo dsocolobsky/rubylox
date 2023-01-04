@@ -1,4 +1,9 @@
+# frozen_string_literal: true
+require 'rubylox/statements'
+
 module Rubylox
+
+  # Transforms a list of tokens into a list of statements
   class Parser
 
     def initialize(tokens)
@@ -6,11 +11,33 @@ module Rubylox
       @current = 0
     end
 
-    def parse(expression)
-      parse_expression
+    def parse
+      statements = []
+      statements << parse_statement until at_end?
+      statements
     end
 
-    def parse_expression
+    def parse_statement
+      return parse_statement_print if match(:print)
+
+      parse_statement_expression
+    end
+
+    def parse_statement_print
+      value = expression
+      consume(:semicolon, "Expect ';' after value.")
+      Rubylox::PrintStmt.new(value)
+    end
+
+    def parse_statement_expression
+      expr = expression
+      consume(:semicolon, "Expect ';' after expression.")
+      Rubylox::ExpressionStmt.new(expr)
+    end
+
+    # The books names this function 'expression' thought I think we can do better
+    # Parse equality for now since it's the most top-level expression we have for now
+    def expression
       parse_equality
     end
 
@@ -84,7 +111,7 @@ module Rubylox
       elsif match(:number, :string)
         LiteralExpression.new(previous.literal)
       elsif match(:left_paren)
-        expr = parse_expression
+        expr = parse_statement_expression
         consume(:right_paren, "Expect ')' after expression.")
         return GroupingExpression.new(expr)
       else
@@ -139,9 +166,7 @@ module Rubylox
     end
 
     def peek_is?(type)
-      if at_end?
-        return false
-      end
+      return false if at_end?
       peek.type == type
     end
 

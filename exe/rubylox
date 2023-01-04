@@ -1,3 +1,17 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require "rubylox"
+require "rubylox/scanner"
+require "rubylox/expressions"
+require "rubylox/parser"
+require "rubylox/token"
+require "rubylox/interpreter"
+
+source = "print 2 + 2 * 7; \n print \"trying\";"
+
+tokens = Rubylox::Scanner.new(source).scan_tokens
+parser = Rubylox::Parser.new(tokens)
+expression = parser.parse
+interpreter = Rubylox::Interpreter.new
+interpreter.interpret(expression)

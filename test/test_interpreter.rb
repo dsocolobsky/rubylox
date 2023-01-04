@@ -33,7 +33,7 @@ class TestInterpreter < Minitest::Test
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)
-    expression = parser.parse(tokens)
+    expression = parser.parse
     interpreter = Rubylox::Interpreter.new
     interpreter.interpret(expression)
   end
