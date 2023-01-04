@@ -7,27 +7,27 @@ require 'rubylox/interpreter'
 
 class TestInterpreter < Minitest::Test
   def test_number
-    out = interpret_program('42')
-
-    assert_equal "42.0", out
+    assert_output(/42.0/) do
+      interpret_program('print 42;')
+    end
   end
 
   def test_addition
-    out = interpret_program('5 + 2')
-
-    assert_equal "7.0", out
+    assert_output(/7.0/) do
+      interpret_program('print 5 + 2;')
+    end
   end
 
   def test_mathematical_operations
-    out = interpret_program('5 + 2 * 3 - 1')
-
-    assert_equal "10.0", out
+    assert_output(/10.0/) do
+      interpret_program('print 5 + 2 * 3 - 1;')
+    end
   end
 
   def test_division
-    out = interpret_program('5 / 2')
-
-    assert_equal "2.5", out
+    assert_output(/2.5/) do
+      interpret_program('print 5/2;')
+    end
   end
 
   def interpret_program(source)
