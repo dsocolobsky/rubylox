@@ -20,6 +20,10 @@ module Rubylox
       puts value.to_s
     end
 
+    def visit_variable_statement(stmt)
+      raise NotImplementedError
+    end
+
     def visit_function_statement(stmt)
       raise NotImplementedError
     end

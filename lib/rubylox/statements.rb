@@ -24,6 +24,19 @@ module Rubylox
     end
   end
 
+  class VariableStmt
+    def initialize(name, initializer)
+      @name = name
+      @initializer = initializer
+    end
+
+    attr_reader :name, :initializer
+
+    def accept(visitor)
+      visitor.visit_variable_statement(self)
+    end
+  end
+
   class FunctionStmt
     def initialize(name, params, body)
       @name = name
