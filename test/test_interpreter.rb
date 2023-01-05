@@ -4,6 +4,7 @@ require 'rubylox/expressions'
 require 'rubylox/parser'
 require 'rubylox/token'
 require 'rubylox/interpreter'
+require 'rubylox/environment'
 
 class TestInterpreter < Minitest::Test
   def test_number
@@ -27,6 +28,12 @@ class TestInterpreter < Minitest::Test
   def test_division
     assert_output(/2.5/) do
       interpret_program('print 5/2;')
+    end
+  end
+
+  def test_variables
+    assert_output(/3.0/) do
+      interpret_program('var a = 1; var b = 2; print a+b;')
     end
   end
 

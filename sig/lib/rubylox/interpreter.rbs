@@ -1,5 +1,8 @@
 module Rubylox
   class Interpreter
+    attr_reader environment: Environment
+
+    def initialize: () -> void
     def interpret: (Array[statement]) -> untyped
     def execute: (statement) -> void
     def visit_expression_statement: (ExpressionStmt) -> void
@@ -7,6 +10,7 @@ module Rubylox
     def visit_variable_statement: (VariableStmt) -> void
     def visit_function_statement: (FunctionStmt) -> untyped
     def visit_literal_expression: (LiteralExpression) -> untyped
+    def visit_variable_expression: (VariableExpression) -> untyped
     def visit_grouping_expression: (GroupingExpression) -> untyped
     def visit_unary_expression: (UnaryExpression) -> untyped
     def visit_binary_expression: (BinaryExpression) -> untyped

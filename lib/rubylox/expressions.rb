@@ -23,6 +23,18 @@ module Rubylox
     end
   end
 
+  class VariableExpression
+    def initialize(name)
+      @name = name
+    end
+
+    attr_reader :name
+
+    def accept(visitor)
+      visitor.visit_variable_expression(self)
+    end
+  end
+
   class UnaryExpression
     def initialize(operator, right)
       @operator = operator

@@ -18,7 +18,7 @@ module Rubylox
   end
 
   class VariableStmt
-    def initialize: (Token, expression) -> void
+    def initialize: (Token, expression?) -> void
 
     attr_reader name: Token
     attr_reader initializer: expression

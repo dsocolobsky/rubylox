@@ -6,21 +6,21 @@ require 'rubylox/token'
 
 class TestParser < Minitest::Test
   def test_parse_number
-    number = scan_program('42')
+    number = scan_program('42;')
 
     assert_instance_of Rubylox::LiteralExpression, number
     assert_equal 42.0, number.value
   end
 
   def test_parse_decimal_number
-    number = scan_program('3.14')
+    number = scan_program('3.14;')
 
     assert_instance_of Rubylox::LiteralExpression, number
     assert_equal 3.14, number.value
   end
 
   def test_parse_unary
-    neg_one = scan_program('!1')
+    neg_one = scan_program('!1;')
 
     assert_instance_of Rubylox::UnaryExpression, neg_one
     assert_equal :bang, neg_one.operator.type
@@ -28,18 +28,20 @@ class TestParser < Minitest::Test
   end
 
   def test_parse_double_negation
-    neg_neg_bar = scan_program('!!bar')
+    neg_neg_bar = scan_program('!!bar;')
     assert_instance_of Rubylox::UnaryExpression, neg_neg_bar
     assert_equal :bang, neg_neg_bar.operator.type
 
     neg_bar = neg_neg_bar.right
     assert_instance_of Rubylox::UnaryExpression, neg_bar
     assert_equal :bang, neg_bar.operator.type
-    assert_equal 'bar', neg_bar.right.value
+
+    assert_instance_of Rubylox::VariableExpression, neg_bar.right
+    assert_equal 'bar', neg_bar.right.name.lexeme
   end
 
   def test_parse_term
-    sum = scan_program('1 + 2 + 3')
+    sum = scan_program('1 + 2 + 3;')
     assert_instance_of Rubylox::BinaryExpression, sum
     assert_equal :plus, sum.operator.type
     assert_equal 3.0, sum.right.value
@@ -52,7 +54,7 @@ class TestParser < Minitest::Test
   end
 
   def test_parse_factor
-    multiplication = scan_program('2 * 3 * 9')
+    multiplication = scan_program('2 * 3 * 9;')
     assert_instance_of Rubylox::BinaryExpression, multiplication
     assert_equal :star, multiplication.operator.type
     assert_equal 9.0, multiplication.right.value
@@ -65,7 +67,7 @@ class TestParser < Minitest::Test
   end
 
   def test_parse_mixed_operations
-    one_plus_two_times_three = scan_program('1 + 2 * 3')
+    one_plus_two_times_three = scan_program('1 + 2 * 3;')
 
     assert_instance_of Rubylox::BinaryExpression, one_plus_two_times_three
     assert_equal :plus, one_plus_two_times_three.operator.type
@@ -82,10 +84,10 @@ class TestParser < Minitest::Test
   end
 
   def test_parse_grouping
-    group = scan_program('(4 - 3)')
+    group = scan_program('(4 - 3);')
 
     assert_instance_of Rubylox::GroupingExpression, group
-    inner = group.expression.expression
+    inner = group.expression
     assert_instance_of Rubylox::BinaryExpression, inner
     assert_equal 4.0, inner.left.value
     assert_equal :minus, inner.operator.type

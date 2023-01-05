@@ -6,6 +6,9 @@ module Rubylox
     def initialize: (Array[Token] tokens) -> void
     def parse: () -> [statement]
 
+    def parse_declaration: () -> statement
+    def parse_variable_declaration: () -> VariableStmt
+
     def parse_statement: () -> statement
     def parse_statement_print: () -> PrintStmt
     def parse_statement_expression: () -> ExpressionStmt
@@ -19,14 +22,14 @@ module Rubylox
     def expression: () -> expression
 
     def match: (*untyped types) -> bool
-    def consume: (untyped `type`, untyped message) -> untyped
+    def consume: (untyped `type`, untyped message) -> Token
     def error: (untyped token, untyped message) -> untyped
     def report: (untyped line, untyped where, untyped message) -> ::String
     def synchronize: () -> (nil | untyped)
-    def peek_is?: (untyped `type`) -> (false | untyped)
-    def advance: () -> untyped
-    def at_end?: () -> untyped
-    def peek: () -> untyped
-    def previous: () -> untyped
+    def peek_is?: (untyped `type`) -> bool
+    def advance: () -> Token
+    def at_end?: () -> bool
+    def peek: () -> Token
+    def previous: () -> Token
   end
 end

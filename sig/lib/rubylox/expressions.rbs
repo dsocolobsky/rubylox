@@ -1,5 +1,5 @@
 module Rubylox
-  type expression = GroupingExpression | LiteralExpression | UnaryExpression |
+  type expression = GroupingExpression | LiteralExpression | VariableExpression | UnaryExpression |
     BinaryExpression
 
   class GroupingExpression
@@ -11,6 +11,12 @@ module Rubylox
   class LiteralExpression
     def initialize: (untyped value) -> void
     attr_reader value: untyped
+    def accept: (untyped visitor) -> void
+  end
+
+  class VariableExpression
+    def initialize: (Token) -> void
+    attr_reader name: Token
     def accept: (untyped visitor) -> void
   end
 

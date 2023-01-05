@@ -13,8 +13,24 @@ module Rubylox
 
     def parse
       statements = []
-      statements << parse_statement until at_end?
+      statements << parse_declaration until at_end?
       statements
+    end
+
+    def parse_declaration
+      return parse_variable_declaration if match(:var)
+
+      parse_statement
+    end
+
+    def parse_variable_declaration
+      name = consume(:identifier, 'Expected variable name.')
+
+      initializer = nil
+      initializer = expression if match(:equal)
+
+      consume(:semicolon, 'Expect ";" after variable declaration.')
+      Rubylox::VariableStmt.new(name, initializer)
     end
 
     def parse_statement
@@ -107,15 +123,15 @@ module Rubylox
       elsif match(:nil)
         LiteralExpression.new(nil)
       elsif match(:identifier)
-        LiteralExpression.new(previous.lexeme)
+        VariableExpression.new(previous)
       elsif match(:number, :string)
         LiteralExpression.new(previous.literal)
       elsif match(:left_paren)
-        expr = parse_statement_expression
+        expr = expression
         consume(:right_paren, "Expect ')' after expression.")
-        return GroupingExpression.new(expr)
+        GroupingExpression.new(expr)
       else
-        raise error(peek, "Expect expression.")
+        raise error(peek, 'Expect expression.')
       end
     end
 
@@ -133,12 +149,12 @@ module Rubylox
     def consume(type, message)
       return advance if peek_is?(type)
 
-      error(peek, message)
+      raise error(peek, message)
     end
 
     def error(token, message)
       if token.type == :eof
-        report(token.line, "end", message)
+        report(token.line, 'end', message)
       else
         report(token.line, token.lexeme, message)
       end
@@ -167,6 +183,7 @@ module Rubylox
 
     def peek_is?(type)
       return false if at_end?
+
       peek.type == type
     end
 

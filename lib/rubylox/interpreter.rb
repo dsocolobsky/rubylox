@@ -1,6 +1,10 @@
 module Rubylox
   class Interpreter
 
+    def initialize
+      @environment = Rubylox::Environment.new
+    end
+
     def interpret(statements)
       statements.each do |statement|
         execute(statement)
@@ -21,7 +25,9 @@ module Rubylox
     end
 
     def visit_variable_statement(stmt)
-      raise NotImplementedError
+      value = nil
+      value = evaluate(stmt.initializer) if stmt.initializer
+      @environment.define(stmt.name, value)
     end
 
     def visit_function_statement(stmt)
@@ -30,6 +36,10 @@ module Rubylox
 
     def visit_literal_expression(expr)
       expr.value
+    end
+
+    def visit_variable_expression(expr)
+      @environment.get(expr.name)
     end
 
     def visit_grouping_expression(expr)
