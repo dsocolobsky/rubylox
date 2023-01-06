@@ -35,6 +35,7 @@ module Rubylox
 
     def parse_statement
       return parse_statement_print if match(:print)
+      return parse_statement_block if match(:left_brace)
 
       parse_statement_expression
     end
@@ -49,6 +50,17 @@ module Rubylox
       expr = expression
       consume(:semicolon, "Expect ';' after expression.")
       Rubylox::ExpressionStmt.new(expr)
+    end
+
+    def parse_statement_block
+      statements = []
+
+      while !peek_is?(:right_brace) && !at_end?
+        statements << parse_declaration
+      end
+
+      consume(:right_brace, "Expect '}' after block.")
+      BlockStmt.new(statements)
     end
 
     # The books names this function 'expression' thought I think we can do better

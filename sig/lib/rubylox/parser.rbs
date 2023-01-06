@@ -13,6 +13,8 @@ module Rubylox
     def parse_statement: () -> statement
     def parse_statement_print: () -> PrintStmt
     def parse_statement_expression: () -> ExpressionStmt
+    def parse_statement_block: () -> BlockStmt
+
     def parse_equality: () -> expression
     def parse_comparison: () -> expression
     def parse_term: () -> expression

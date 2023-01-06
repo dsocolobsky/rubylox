@@ -1,8 +1,9 @@
 module Rubylox
   class Environment
     attr_reader values: ::Hash[::String, untyped]
+    attr_reader enclosing: Environment?
 
-    def initialize: () -> void
+    def initialize: (Environment? enclosing) -> void
     def define: (Token name, untyped value) -> untyped
     def get: (Token name) -> untyped
   end

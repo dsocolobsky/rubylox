@@ -11,6 +11,19 @@ module Rubylox
       end
     end
 
+    def execute_block(statements, environment)
+      parent = @environment
+
+      begin
+        @environment = environment
+        statements.each do |statement|
+          execute(statement)
+        end
+      ensure
+        @environment = parent
+      end
+    end
+
     def execute(statement)
       statement.accept(self)
     end
@@ -28,6 +41,10 @@ module Rubylox
       value = nil
       value = evaluate(stmt.initializer) if stmt.initializer
       @environment.define(stmt.name, value)
+    end
+
+    def visit_block_statement(stmt)
+      execute_block(stmt.statements, Environment.new(@environment))
     end
 
     def visit_function_statement(stmt)

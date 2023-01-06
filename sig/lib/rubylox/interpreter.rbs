@@ -4,7 +4,10 @@ module Rubylox
 
     def initialize: () -> void
     def interpret: (Array[statement]) -> untyped
+
+    def execute_block: (Array[statement], Environment) -> void
     def execute: (statement) -> void
+
     def visit_expression_statement: (ExpressionStmt) -> void
     def visit_print_statement: (PrintStmt) -> void
     def visit_variable_statement: (VariableStmt) -> void
@@ -15,6 +18,7 @@ module Rubylox
     def visit_grouping_expression: (GroupingExpression) -> untyped
     def visit_unary_expression: (UnaryExpression) -> untyped
     def visit_binary_expression: (BinaryExpression) -> untyped
+
     def evaluate: (expression) -> untyped
     def is_truthy: (untyped object) -> bool
   end

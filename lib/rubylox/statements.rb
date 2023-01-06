@@ -37,6 +37,18 @@ module Rubylox
     end
   end
 
+  class BlockStmt
+    def initialize(statements)
+      @statements = statements
+    end
+
+    attr_reader :statements
+
+    def accept(visitor)
+      visitor.visit_block_statement(self)
+    end
+  end
+
   class FunctionStmt
     def initialize(name, params, body)
       @name = name

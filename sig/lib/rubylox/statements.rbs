@@ -1,5 +1,5 @@
 module Rubylox
-  type statement = ExpressionStmt | PrintStmt | FunctionStmt
+  type statement = ExpressionStmt | PrintStmt | FunctionStmt | BlockStmt
 
   class ExpressionStmt
     def initialize: (expression) -> void
@@ -22,6 +22,14 @@ module Rubylox
 
     attr_reader name: Token
     attr_reader initializer: expression
+
+    def accept: (Interpreter visitor) -> void
+  end
+
+  class BlockStmt
+    def initialize: (Array[statement]) -> void
+
+    attr_reader statements: Array[statement]
 
     def accept: (Interpreter visitor) -> void
   end
