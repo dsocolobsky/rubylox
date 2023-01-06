@@ -61,4 +61,17 @@ module Rubylox
       visitor.visit_binary_expression(self)
     end
   end
+
+  class AssignExpression
+    def initialize(name, value)
+      @name = name
+      @value = value
+    end
+
+    attr_reader :name, :value
+
+    def accept(visitor)
+      visitor.visit_assign_expression(self)
+    end
+  end
 end

@@ -42,6 +42,12 @@ module Rubylox
       @environment.get(expr.name)
     end
 
+    def visit_assign_expression(expr)
+      value = evaluate(expr.value)
+      @environment.assign(expr.name, value)
+      value
+    end
+
     def visit_grouping_expression(expr)
       evaluate(expr.expression)
     end

@@ -37,6 +37,12 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_variable_assignment
+    assert_output(/3.0/) do
+      interpret_program('var a = 1; a = 3; print a;')
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

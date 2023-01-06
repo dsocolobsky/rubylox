@@ -16,5 +16,13 @@ module Rubylox
         raise "Undefined variable #{name}"
       end
     end
+
+    def assign(name, value)
+      if @values.key?(name.lexeme)
+        @values[name.lexeme] = value
+      else
+        raise "Undefined variable #{name}"
+      end
+    end
   end
 end

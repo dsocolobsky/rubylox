@@ -8,6 +8,7 @@ module Rubylox
 
     def parse_declaration: () -> statement
     def parse_variable_declaration: () -> VariableStmt
+    def parse_assignment: () -> AssignExpression
 
     def parse_statement: () -> statement
     def parse_statement_print: () -> PrintStmt

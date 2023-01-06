@@ -52,9 +52,27 @@ module Rubylox
     end
 
     # The books names this function 'expression' thought I think we can do better
-    # Parse equality for now since it's the most top-level expression we have for now
+    # Parse assignment for now since it's the lowest-precedence expression we have
     def expression
-      parse_equality
+      parse_assignment
+    end
+
+    def parse_assignment
+      expr = parse_equality
+
+      if match(:equal)
+        equals = previous
+        value = parse_assignment
+
+        if expr.is_a?(VariableExpression)
+          name = expr.name
+          return Rubylox::AssignExpression.new(name, value)
+        end
+
+        raise error(equals, 'Invalid assignment target.')
+      end
+
+      expr
     end
 
     def parse_equality
