@@ -49,6 +49,20 @@ module Rubylox
     end
   end
 
+  class IfStmt
+    def initialize(condition, then_branch, else_branch)
+      @condition = condition
+      @then_branch = then_branch
+      @else_branch = else_branch
+    end
+
+    attr_reader :condition, :then_branch, :else_branch
+
+    def accept(visitor)
+      visitor.visit_if_statement(self)
+    end
+  end
+
   class FunctionStmt
     def initialize(name, params, body)
       @name = name

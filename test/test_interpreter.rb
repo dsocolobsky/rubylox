@@ -49,6 +49,18 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_if_statement
+    assert_output(/1.0/) do
+      interpret_program('if (true) { print 1; }')
+    end
+  end
+
+  def test_if_statement_with_else
+    assert_output(/2.0/) do
+      interpret_program('if (false) { print 1; } else { print 2; }')
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

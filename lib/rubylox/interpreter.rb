@@ -47,6 +47,14 @@ module Rubylox
       execute_block(stmt.statements, Environment.new(@environment))
     end
 
+    def visit_if_statement(stmt)
+      if is_truthy(evaluate(stmt.condition))
+        execute(stmt.then_branch)
+      elsif stmt.else_branch
+        execute(stmt.else_branch)
+      end
+    end
+
     def visit_function_statement(stmt)
       raise NotImplementedError
     end

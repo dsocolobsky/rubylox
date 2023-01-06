@@ -34,10 +34,22 @@ module Rubylox
     end
 
     def parse_statement
+      return parse_statement_if if match(:if)
       return parse_statement_print if match(:print)
       return parse_statement_block if match(:left_brace)
 
       parse_statement_expression
+    end
+
+    def parse_statement_if
+      consume(:left_paren, "Expect '(' after 'if'.")
+      condition = expression
+      consume(:right_paren, "Expect ')' after if condition.")
+
+      then_branch = parse_statement
+      else_branch = parse_statement if match(:else)
+
+      Rubylox::IfStmt.new(condition, then_branch, else_branch)
     end
 
     def parse_statement_print
