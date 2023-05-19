@@ -90,6 +90,18 @@ module Rubylox
       end
     end
 
+    def visit_logical_expression(expr)
+      left = evaluate(expr.left)
+
+      if expr.operator.type == :or
+        return left if is_truthy(left)
+      else
+        return left unless is_truthy(left)
+      end
+
+      evaluate(expr.right)
+    end
+
     def visit_binary_expression(expr)
       left = evaluate(expr.left)
       right = evaluate(expr.right)

@@ -82,7 +82,7 @@ module Rubylox
     end
 
     def parse_assignment
-      expr = parse_equality
+      expr = parse_or
 
       if match(:equal)
         equals = previous
@@ -94,6 +94,30 @@ module Rubylox
         end
 
         raise error(equals, 'Invalid assignment target.')
+      end
+
+      expr
+    end
+
+    def parse_or
+      expr = parse_and
+
+      while match(:or)
+        operator = previous
+        right = parse_and
+        expr = LogicalExpression.new(expr, operator, right)
+      end
+
+      expr
+    end
+
+    def parse_and
+      expr = parse_equality
+
+      while match(:and)
+        operator = previous
+        right = parse_equality
+        expr = LogicalExpression.new(expr, operator, right)
       end
 
       expr

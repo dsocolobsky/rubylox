@@ -39,6 +39,16 @@ module Rubylox
     def accept: (untyped visitor) -> void
   end
 
+  class LogicalExpression
+    def initialize: (expression left, Token operator, expression right) -> void
+
+    attr_reader left: expression
+    attr_reader operator: Token
+    attr_reader right: expression
+
+    def accept: (untyped visitor) -> void
+  end
+
   class AssignExpression
     def initialize: (Token name, expression value) -> void
 

@@ -43,6 +43,17 @@ class AstPrinterTest < Minitest::Test
     assert_equal '(* 123 456)', printer.print(binary)
   end
 
+  def test_print_logical_expression
+    logical = Rubylox::LogicalExpression.new(
+      Rubylox::LiteralExpression.new(true),
+      Rubylox::Token.new(:or, 'or', nil, 1),
+      Rubylox::LiteralExpression.new(false)
+    )
+
+    printer = Rubylox::AstPrinter.new
+    assert_equal '(or true false)', printer.print(logical)
+  end
+
   def test_print_combined_expressions
     binary = Rubylox::BinaryExpression.new(
       Rubylox::LiteralExpression.new(1),

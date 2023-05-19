@@ -48,6 +48,20 @@ module Rubylox
     end
   end
 
+  class LogicalExpression
+    def initialize(left, operator, right)
+      @left = left
+      @operator = operator
+      @right = right
+    end
+
+    attr_reader :left, :operator, :right
+
+    def accept(visitor)
+      visitor.visit_logical_expression(self)
+    end
+  end
+
   class BinaryExpression
     def initialize(left, operator, right)
       @left = left

@@ -5,6 +5,7 @@ module Rubylox
     def visit_literal_expression: (LiteralExpression) -> ("nil" | untyped)
     def visit_unary_expression: (UnaryExpression) -> untyped
     def visit_binary_expression: (BinaryExpression) -> untyped
+    def visit_logical_expression: (LogicalExpression) -> untyped
     def parenthesize: (String name, *expression) -> untyped
   end
 end

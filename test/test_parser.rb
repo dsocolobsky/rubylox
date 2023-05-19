@@ -94,6 +94,20 @@ class TestParser < Minitest::Test
     assert_equal 3.0, inner.right.value
   end
 
+  def test_parse_logical_expressions
+    expression = scan_program('true and false;')
+    assert_instance_of Rubylox::LogicalExpression, expression
+    assert_equal :and, expression.operator.type
+
+    left = expression.left
+    assert_instance_of Rubylox::LiteralExpression, left
+    assert_equal true, left.value
+
+    right = expression.right
+    assert_instance_of Rubylox::LiteralExpression, right
+    assert_equal false, right.value
+  end
+
   def scan_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

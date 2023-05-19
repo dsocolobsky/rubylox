@@ -61,6 +61,30 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_logical_or_true
+    assert_output(/true/) do
+      interpret_program('print false or true;')
+    end
+  end
+
+  def test_logical_or_false
+    assert_output(/false/) do
+      interpret_program('print false or false;')
+    end
+  end
+
+  def test_logical_and_false
+    assert_output(/false/) do
+      interpret_program('print false and false;')
+    end
+  end
+
+  def test_logical_and_true
+    assert_output(/true/) do
+      interpret_program('print true and true;')
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

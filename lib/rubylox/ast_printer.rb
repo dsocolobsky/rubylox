@@ -20,6 +20,10 @@ module Rubylox
       parenthesize(expr.operator.lexeme, expr.right)
     end
 
+    def visit_logical_expression(expr)
+      parenthesize(expr.operator.lexeme, expr.left, expr.right)
+    end
+
     def visit_binary_expression(expr)
       parenthesize(expr.operator.lexeme, expr.left, expr.right)
     end
