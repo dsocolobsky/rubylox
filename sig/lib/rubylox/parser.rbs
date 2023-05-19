@@ -15,6 +15,7 @@ module Rubylox
     def parse_statement_print: () -> PrintStmt
     def parse_statement_expression: () -> ExpressionStmt
     def parse_statement_block: () -> BlockStmt
+    def parse_statement_while: () -> WhileStmt
 
     def parse_or: () -> expression
     def parse_and: () -> expression

@@ -63,6 +63,19 @@ module Rubylox
     end
   end
 
+  class WhileStmt
+    def initialize(condition, body)
+      @condition = condition
+      @body = body
+    end
+
+    attr_reader :condition, :body
+
+    def accept(visitor)
+      visitor.visit_while_statement(self)
+    end
+  end
+
   class FunctionStmt
     def initialize(name, params, body)
       @name = name

@@ -1,6 +1,6 @@
 module Rubylox
   type statement = ExpressionStmt | PrintStmt |
-    FunctionStmt | BlockStmt | IfStmt
+    FunctionStmt | BlockStmt | IfStmt | WhileStmt
 
   class ExpressionStmt
     def initialize: (expression) -> void
@@ -41,6 +41,15 @@ module Rubylox
     attr_reader condition: expression
     attr_reader then_branch: statement
     attr_reader else_branch: statement
+
+    def accept: (Interpreter visitor) -> void
+  end
+
+  class WhileStmt
+    def initialize: (expression condition, Array[statement] body) -> void
+
+    attr_reader condition: expression
+    attr_reader body: statement
 
     def accept: (Interpreter visitor) -> void
   end

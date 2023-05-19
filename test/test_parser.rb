@@ -108,6 +108,44 @@ class TestParser < Minitest::Test
     assert_equal false, right.value
   end
 
+  def test_parse_block
+    source = <<~SOURCE
+      {
+        print 1;
+        print 2;
+      }
+    SOURCE
+
+    tokens = Rubylox::Scanner.new(source).scan_tokens
+    parser = Rubylox::Parser.new(tokens)
+    statements = parser.parse
+    assert_equal 1, statements.length
+
+    statement = statements[0]
+    assert_instance_of Rubylox::BlockStmt, statement
+    assert_equal 2, statement.statements.length
+  end
+
+  def test_parse_while_statement
+    source = <<~SOURCE
+      while (true) {
+        print 1;
+      }
+    SOURCE
+
+    tokens = Rubylox::Scanner.new(source).scan_tokens
+    parser = Rubylox::Parser.new(tokens)
+    statements = parser.parse
+    assert_equal 1, statements.length
+
+    statement = statements[0]
+    assert_instance_of Rubylox::WhileStmt, statement
+    assert_instance_of Rubylox::LiteralExpression, statement.condition
+    assert_instance_of Rubylox::BlockStmt, statement.body
+    assert_equal true, statement.condition.value
+    assert_equal 1, statement.body.statements.length
+  end
+
   def scan_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

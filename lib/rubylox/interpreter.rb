@@ -132,6 +132,10 @@ module Rubylox
       end
     end
 
+    def visit_while_statement(expr)
+      execute(expr.body) while is_truthy(evaluate(expr.condition))
+    end
+
     def evaluate(expr)
       expr.accept(self)
     end

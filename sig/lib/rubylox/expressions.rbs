@@ -57,4 +57,13 @@ module Rubylox
 
     def accept: (untyped visitor) -> void
   end
+
+  class WhileExpression
+    def initialize: (expression condition, statement body) -> void
+
+    attr_reader name: Token
+    attr_reader value: expression
+
+    def accept: (untyped visitor) -> void
+  end
 end

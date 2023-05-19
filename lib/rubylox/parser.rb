@@ -36,6 +36,7 @@ module Rubylox
     def parse_statement
       return parse_statement_if if match(:if)
       return parse_statement_print if match(:print)
+      return parse_statement_while if match(:while)
       return parse_statement_block if match(:left_brace)
 
       parse_statement_expression
@@ -73,6 +74,15 @@ module Rubylox
 
       consume(:right_brace, "Expect '}' after block.")
       BlockStmt.new(statements)
+    end
+
+    def parse_statement_while
+      consume(:left_paren, "Expect '(' after 'while'.")
+      condition = expression
+      consume(:right_paren, "Expect ')' after condition.")
+      body = parse_statement
+
+      Rubylox::WhileStmt.new(condition, body)
     end
 
     # The books names this function 'expression' thought I think we can do better

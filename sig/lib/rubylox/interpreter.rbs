@@ -13,6 +13,7 @@ module Rubylox
     def visit_print_statement: (PrintStmt) -> void
     def visit_variable_statement: (VariableStmt) -> void
     def visit_function_statement: (FunctionStmt) -> untyped
+    def visit_while_statement: (WhileStmt) -> untyped
 
     def visit_literal_expression: (LiteralExpression) -> untyped
     def visit_variable_expression: (VariableExpression) -> untyped

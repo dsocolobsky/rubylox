@@ -85,6 +85,12 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_while_loop
+    assert_output(/1.0\n2.0\n3.0\n4.0\n5.0/) do
+      interpret_program('var a = 1; while (a < 6) { print a; a = a + 1; }')
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)
