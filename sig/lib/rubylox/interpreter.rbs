@@ -22,6 +22,7 @@ module Rubylox
     def visit_unary_expression: (UnaryExpression) -> untyped
     def visit_binary_expression: (BinaryExpression) -> untyped
     def visit_logical_expression: (LogicalExpression) -> untyped
+    def visit_call_expression: (CallExpression) -> untyped
 
     def evaluate: (expression) -> untyped
     def is_truthy: (untyped object) -> bool

@@ -31,6 +31,12 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_variable_simple
+    assert_output(/3.0/) do
+      interpret_program('var a = 3; print a;')
+    end
+  end
+
   def test_variables
     assert_output(/3.0/) do
       interpret_program('var a = 1; var b = 2; print a+b;')
@@ -88,6 +94,15 @@ class TestInterpreter < Minitest::Test
   def test_while_loop
     assert_output(/1.0\n2.0\n3.0\n4.0\n5.0/) do
       interpret_program('var a = 1; while (a < 6) { print a; a = a + 1; }')
+    end
+  end
+
+  def test_function_call_clock
+    # Replace Time.now with a lambda that returns the fixed time
+    Time.stub :now, -> { Time.at(3600) } do
+      assert_output(/3600.0/) do
+        interpret_program('print clock();')
+      end
     end
   end
 

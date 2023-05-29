@@ -146,6 +146,39 @@ class TestParser < Minitest::Test
     assert_equal 1, statement.body.statements.length
   end
 
+  def test_parse_variable_assigment_with_print
+    source = <<~SOURCE
+      var foo = 3;
+      print foo;
+    SOURCE
+
+    tokens = Rubylox::Scanner.new(source).scan_tokens
+    parser = Rubylox::Parser.new(tokens)
+    statements = parser.parse
+    assert_equal 2, statements.length
+
+    var_stmt = statements[0]
+    assert_instance_of Rubylox::VariableStmt, var_stmt
+    assert_equal 'foo', var_stmt.name.lexeme
+    assert_instance_of Rubylox::LiteralExpression, var_stmt.initializer
+    assert_equal 3.0, var_stmt.initializer.value
+
+    print_stmt = statements[1]
+    assert_instance_of Rubylox::PrintStmt, print_stmt
+    assert_instance_of Rubylox::VariableExpression, print_stmt.expression
+    assert_equal 'foo', print_stmt.expression.name.lexeme
+  end
+
+  def test_parse_clock_call
+    tokens = Rubylox::Scanner.new('clock();').scan_tokens
+    parser = Rubylox::Parser.new(tokens)
+    statements = parser.parse
+    call_expression = statements[0].expression
+
+    assert_instance_of Rubylox::CallExpression, call_expression
+    assert_equal 'clock', call_expression.callee.name.lexeme
+  end
+
   def scan_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

@@ -24,6 +24,7 @@ module Rubylox
     def parse_term: () -> expression
     def parse_factor: () -> expression
     def parse_unary: () -> expression
+    def parse_call: () ->
     def parse_primary: () -> expression
 
     def expression: () -> expression

@@ -88,4 +88,18 @@ module Rubylox
       visitor.visit_assign_expression(self)
     end
   end
+
+  class CallExpression
+    def initialize(callee, paren, arguments)
+      @callee = callee
+      @paren = paren
+      @arguments = arguments
+    end
+
+    attr_reader :callee, :paren, :arguments
+
+    def accept(visitor)
+      visitor.visit_call_expression(self)
+    end
+  end
 end

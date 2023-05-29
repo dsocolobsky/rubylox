@@ -1,6 +1,6 @@
 module Rubylox
   type expression = GroupingExpression | LiteralExpression | VariableExpression | UnaryExpression |
-    BinaryExpression | AssignExpression
+    BinaryExpression | AssignExpression | CallExpression
 
   class GroupingExpression
     def initialize: (expression) -> void
@@ -63,6 +63,12 @@ module Rubylox
 
     attr_reader name: Token
     attr_reader value: expression
+
+    def accept: (untyped visitor) -> void
+  end
+
+  class CallExpression
+    def initialize: (expression callee, untyped paren, untyped arguments) -> void
 
     def accept: (untyped visitor) -> void
   end

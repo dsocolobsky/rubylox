@@ -2,7 +2,23 @@ module Rubylox
   class Interpreter
 
     def initialize
-      @environment = Rubylox::Environment.new
+      @globals = Rubylox::Environment.new
+
+      @globals.define('clock', Class.new do
+        def self.arity
+          0
+        end
+
+        def self.call(interpreter, arguments)
+          Time.now.utc.to_f
+        end
+
+        def self.to_s
+          '<native fn>'
+        end
+      end)
+
+      @environment = @globals
     end
 
     def interpret(statements)
@@ -40,7 +56,7 @@ module Rubylox
     def visit_variable_statement(stmt)
       value = nil
       value = evaluate(stmt.initializer) if stmt.initializer
-      @environment.define(stmt.name, value)
+      @environment.define(stmt.name.lexeme, value)
     end
 
     def visit_block_statement(stmt)
@@ -130,6 +146,25 @@ module Rubylox
       else
         raise "Unknown binary operator: #{expr.operator.type}"
       end
+    end
+
+    def visit_call_expression(expression)
+      # First we evaluate the expression for the callee which usually is just an identifier
+      # but could be anything really
+      callee = evaluate(expression.callee)
+
+      # Now we evaluate each of the arguments in order
+      arguments = []
+      expression.arguments.each do |argument|
+        arguments.push(evaluate(argument))
+      end
+
+      raise 'Can only call functions and classes' unless callee.respond_to?(:call)
+
+      function = callee
+      raise 'Wrong number of arguments' if arguments.length != function.arity
+
+      function.call(self, arguments)
     end
 
     def visit_while_statement(expr)

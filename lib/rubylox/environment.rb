@@ -8,12 +8,13 @@ module Rubylox
     end
 
     def define(name, value)
-      @values[name.lexeme] = value
+      @values[name] = value
     end
 
     def get(name)
-      if @values.key?(name.lexeme)
-        @values[name.lexeme]
+      key = name.is_a?(Token) ? name.lexeme : name # TODO - this is a bit hacky
+      if @values.key?(key)
+        @values[key]
       elsif @enclosing # Ask the parent scope if it has the variable
         @enclosing.get(name)
       else
@@ -22,8 +23,9 @@ module Rubylox
     end
 
     def assign(name, value)
-      if @values.key?(name.lexeme)
-        @values[name.lexeme] = value
+      key = name.is_a?(Token) ? name.lexeme : name
+      if @values.key?(key)
+        @values[key] = value
       elsif @enclosing # Ask the parent scope if it has the variable
         @enclosing.assign(name, value)
       else

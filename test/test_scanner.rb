@@ -60,6 +60,13 @@ class TestScanner < Minitest::Test
     nil or print return super this true var while])
   end
 
+  def test_clock_call
+    scanner = Rubylox::Scanner.new('clock();')
+    scanner.scan_tokens
+
+    assert_types_are(scanner.tokens, %i[identifier left_paren right_paren semicolon])
+  end
+
   def scan_program(source)
     scanner = Rubylox::Scanner.new(source)
     scanner.scan_tokens

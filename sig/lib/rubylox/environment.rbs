@@ -4,7 +4,7 @@ module Rubylox
     attr_reader enclosing: Environment?
 
     def initialize: (Environment? enclosing) -> void
-    def define: (Token name, untyped value) -> untyped
+    def define: (string name, untyped value) -> untyped
     def get: (Token name) -> untyped
   end
 end

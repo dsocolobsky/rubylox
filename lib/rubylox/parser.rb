@@ -188,27 +188,54 @@ module Rubylox
         return UnaryExpression.new(operator, right)
       end
 
-      parse_primary
+      parse_call
+    end
+
+    def parse_call
+      # Parse a call to a func: primary(arguments?)
+      expr = parse_primary
+
+      loop do
+        if match(:left_paren)
+          expr = finish_call(expr)
+        else
+          break
+        end
+      end
+
+      expr
+    end
+
+    def finish_call(callee)
+      # Parse the input arguments for a call and generate the CallExpression object
+      arguments = []
+      unless peek_is?(:right_paren)
+        loop do
+          raise error(peek, 'Can not have more than 255 arguments') if arguments.length >= 255
+
+          arguments.push(expression)
+          break unless match(:comma)
+        end
+      end
+
+      paren = consume(:right_paren, 'Expect ) after arguments')
+      CallExpression.new(callee, paren, arguments)
     end
 
     def parse_primary
-      if match(:false)
-        LiteralExpression.new(false)
-      elsif match(:true)
-        LiteralExpression.new(true)
-      elsif match(:nil)
-        LiteralExpression.new(nil)
-      elsif match(:identifier)
-        VariableExpression.new(previous)
-      elsif match(:number, :string)
-        LiteralExpression.new(previous.literal)
-      elsif match(:left_paren)
+      return LiteralExpression.new(false) if match(:false)
+      return LiteralExpression.new(true) if match(:true)
+      return LiteralExpression.new(nil) if match(:nil)
+      return LiteralExpression.new(previous.literal) if match(:number, :string)
+      return VariableExpression.new(previous) if match(:identifier)
+
+      if match(:left_paren)
         expr = expression
         consume(:right_paren, "Expect ')' after expression.")
-        GroupingExpression.new(expr)
-      else
-        raise error(peek, 'Expect expression.')
+        return GroupingExpression.new(expr)
       end
+
+      raise error(peek, 'Expect expression.')
     end
 
     def match(*types)
