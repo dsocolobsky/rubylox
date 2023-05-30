@@ -124,6 +124,19 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_function_fibonacci
+    assert_output(/55.0/) do
+      code = <<-CODE
+        fun fib(n) {
+          if (n <= 1) return n;
+          return fib(n - 2) + fib(n - 1);
+        }
+        print fib(10);
+      CODE
+      interpret_program(code)
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

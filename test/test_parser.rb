@@ -201,6 +201,19 @@ class TestParser < Minitest::Test
     assert_equal 1, fun_stmt.body.statements.length
   end
 
+  def test_parse_return_statement
+    code = 'return 1;'
+    tokens = Rubylox::Scanner.new(code).scan_tokens
+    parser = Rubylox::Parser.new(tokens)
+    statements = parser.parse
+    assert_equal 1, statements.length
+
+    return_stmt = statements[0]
+    assert_instance_of Rubylox::ReturnStmt, return_stmt
+    assert_instance_of Rubylox::LiteralExpression, return_stmt.value
+    assert_equal 1.0, return_stmt.value.value
+  end
+
   def scan_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

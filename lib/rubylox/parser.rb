@@ -58,6 +58,7 @@ module Rubylox
     def parse_statement
       return parse_statement_if if match(:if)
       return parse_statement_print if match(:print)
+      return parse_statement_return if match(:return)
       return parse_statement_while if match(:while)
       return parse_statement_block if match(:left_brace)
 
@@ -79,6 +80,15 @@ module Rubylox
       value = expression
       consume(:semicolon, "Expect ';' after value.")
       Rubylox::PrintStmt.new(value)
+    end
+
+    def parse_statement_return
+      keyword = previous
+      value = nil
+      # parse the return expression unless we see a semicolon in which case there is none
+      value = expression unless peek_is?(:semicolon)
+      consume(:semicolon, "Expect ';' after return value.")
+      Rubylox::ReturnStmt.new(keyword, value)
     end
 
     def parse_statement_expression

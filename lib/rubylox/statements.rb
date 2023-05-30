@@ -89,4 +89,17 @@ module Rubylox
       visitor.visit_function_statement(self)
     end
   end
+
+  class ReturnStmt
+    def initialize(keyword, value)
+      @keyword = keyword
+      @value = value
+    end
+
+    attr_reader :keyword, :value
+
+    def accept(visitor)
+      visitor.visit_return_statement(self)
+    end
+  end
 end

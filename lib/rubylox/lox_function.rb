@@ -22,9 +22,22 @@ module Rubylox
         environment.define(param.lexeme, arguments[index])
       end
 
-      interpreter.execute_block(@declaration.body.statements, environment)
+      begin
+        interpreter.execute_block(@declaration.body.statements, environment)
+      rescue ReturnException => e
+        return e.value
+      end
 
       nil
+    end
+  end
+
+  class ReturnException < StandardError
+    attr_reader :value
+
+    def initialize(value, message = nil)
+      super(message)
+      @value = value
     end
   end
 end

@@ -10,8 +10,8 @@ This is a Ruby 3.x interpreter of the Lox programming language from
 - [x] Statements
 - [x] Expressions
 - [x] Control Flow
-- [ ] Function Calling
-- [ ] Function Definition
+- [x] Function Calling
+- [x] Function Definition
 - [ ] Resolving and Binding
 - [ ] Classes
 - [ ] Inheritance

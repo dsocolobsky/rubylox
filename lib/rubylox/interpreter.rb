@@ -81,6 +81,12 @@ module Rubylox
       nil
     end
 
+    def visit_return_statement(stmt)
+      value = nil
+      value = evaluate(stmt.value) if stmt.value
+      raise ReturnException.new(value, nil)
+    end
+
     def visit_literal_expression(expr)
       expr.value
     end
