@@ -10,10 +10,12 @@ module Rubylox
     def execute: (statement) -> void
 
     def visit_expression_statement: (ExpressionStmt) -> void
+    def visit_block_statement: (BlockStmt) -> void
     def visit_if_statement: (IfStmt) -> void
     def visit_print_statement: (PrintStmt) -> void
     def visit_variable_statement: (VariableStmt) -> void
     def visit_function_statement: (FunctionStmt) -> untyped
+    def visit_return_statement: (ReturnStmt) -> untyped
     def visit_while_statement: (WhileStmt) -> untyped
 
     def visit_literal_expression: (LiteralExpression) -> untyped

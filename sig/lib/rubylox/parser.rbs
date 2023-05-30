@@ -14,6 +14,7 @@ module Rubylox
     def parse_statement: () -> statement
     def parse_statement_if: () -> IfStmt
     def parse_statement_print: () -> PrintStmt
+    def parse_statement_return: () -> ReturnStmt
     def parse_statement_expression: () -> ExpressionStmt
     def parse_statement_block: () -> BlockStmt
     def parse_statement_while: () -> WhileStmt
@@ -25,8 +26,10 @@ module Rubylox
     def parse_term: () -> expression
     def parse_factor: () -> expression
     def parse_unary: () -> expression
-    def parse_call: () ->
     def parse_primary: () -> expression
+
+    def parse_call: () -> expression
+    def finish_call: (expression callee) -> CallExpression
 
     def expression: () -> expression
 
