@@ -77,13 +77,13 @@ module Rubylox
   end
 
   class FunctionStmt
-    def initialize(name, params, body)
+    def initialize(name, parameters, body)
       @name = name
-      @params = params
+      @parameters = parameters
       @body = body
     end
 
-    attr_reader :name, :params, :body
+    attr_reader :name, :parameters, :body
 
     def accept(visitor)
       visitor.visit_function_statement(self)

@@ -1,10 +1,14 @@
+require 'rubylox/lox_function'
+
 module Rubylox
   class Interpreter
+
+    attr_reader :globals
 
     def initialize
       @globals = Rubylox::Environment.new
 
-      @globals.define('clock', Class.new do
+      @globals.define('clock', Class.new(LoxCallable) do
         def self.arity
           0
         end
@@ -72,7 +76,9 @@ module Rubylox
     end
 
     def visit_function_statement(stmt)
-      raise NotImplementedError
+      function = LoxFunction.new(stmt)
+      @environment.define(stmt.name.lexeme, function)
+      nil
     end
 
     def visit_literal_expression(expr)

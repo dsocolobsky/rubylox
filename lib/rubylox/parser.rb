@@ -18,9 +18,31 @@ module Rubylox
     end
 
     def parse_declaration
+      return parse_function_declaration('function') if match(:fun)
       return parse_variable_declaration if match(:var)
 
       parse_statement
+    end
+
+    def parse_function_declaration(kind)
+      name = consume(:identifier, "Expect #{kind} name.")
+      consume(:left_paren, "Expect '(' after #{kind} name.")
+
+      parameters = []
+      unless peek_is?(:right_paren)
+        loop do
+          raise error(peek, 'Can not have more than 255 parameters') if parameters.length >= 255
+
+          parameters.push(consume(:identifier, 'Expect parameter name.'))
+          break unless match(:comma)
+        end
+      end
+      consume(:right_paren, "Expect ')' after parameters.")
+
+      consume(:left_brace, "Expect '{' before #{kind} body.")
+      body = parse_statement_block
+
+      Rubylox::FunctionStmt.new(name, parameters, body)
     end
 
     def parse_variable_declaration

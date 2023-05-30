@@ -179,6 +179,28 @@ class TestParser < Minitest::Test
     assert_equal 'clock', call_expression.callee.name.lexeme
   end
 
+  def test_parse_function_declaration
+    code = <<~CODE
+      fun foo(bar, baz) {
+        print 1;
+      }
+    CODE
+
+    tokens = Rubylox::Scanner.new(code).scan_tokens
+    parser = Rubylox::Parser.new(tokens)
+    statements = parser.parse
+    assert_equal 1, statements.length
+
+    fun_stmt = statements[0]
+    assert_instance_of Rubylox::FunctionStmt, fun_stmt
+    assert_equal 'foo', fun_stmt.name.lexeme
+    assert_equal 2, fun_stmt.params.length
+    assert_equal 'bar', fun_stmt.params[0].lexeme
+    assert_equal 'baz', fun_stmt.params[1].lexeme
+    assert_instance_of Rubylox::BlockStmt, fun_stmt.body
+    assert_equal 1, fun_stmt.body.statements.length
+  end
+
   def scan_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

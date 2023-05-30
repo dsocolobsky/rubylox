@@ -106,6 +106,24 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_define_simple_function
+    assert_output(/3.0/) do
+      interpret_program('fun foo() { print 3; } foo();')
+    end
+  end
+
+  def test_define_function_with_parameters
+    assert_output(/3.0/) do
+      code = <<-CODE
+        fun add(a, b) {
+          print a + b;
+        }
+        add(1, 2);
+      CODE
+      interpret_program(code)
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

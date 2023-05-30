@@ -1,6 +1,7 @@
 module Rubylox
   class Interpreter
     attr_reader environment: Environment
+    attr_reader globals: Environment
 
     def initialize: () -> void
     def interpret: (Array[statement]) -> untyped

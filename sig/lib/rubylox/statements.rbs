@@ -55,10 +55,10 @@ module Rubylox
   end
 
   class FunctionStmt
-    def initialize: (Token name, Array[Token] params, Array[statement] body) -> void
+    def initialize: (Token name, Array[Token] parameters, Array[statement] body) -> void
 
     attr_reader name: Token
-    attr_reader params: Array[Token]
+    attr_reader parameters: Array[Token]
     attr_reader body: Array[statement]
 
     def accept: (Interpreter visitor) -> void

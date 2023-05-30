@@ -1,0 +1,13 @@
+module Rubylox
+  class LoxCallable
+    def call: (Interpreter interpreter, [Object] arguments) -> Object
+  end
+
+  class LoxFunction
+    attr_reader declaration: FunctionStmt
+
+    def arity: () -> int
+    def initialize: (FunctionStmt declaration) -> void
+    def call: (Interpreter interpreter, [Object] arguments) -> Object
+  end
+end
