@@ -7,17 +7,19 @@ module Rubylox
 
   class LoxFunction < LoxCallable
     @declaration = nil
+    @closure = nil
 
     def arity
       @declaration.parameters.length
     end
 
-    def initialize(declaration)
+    def initialize(declaration, closure)
       @declaration = declaration
+      @closure = closure
     end
 
     def call(interpreter, arguments)
-      environment = Rubylox::Environment.new(interpreter.globals)
+      environment = Rubylox::Environment.new(@closure)
       @declaration.parameters.each_with_index do |param, index|
         environment.define(param.lexeme, arguments[index])
       end

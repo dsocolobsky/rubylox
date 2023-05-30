@@ -137,6 +137,27 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_closures_counter
+    assert_output(/2.0/) do
+      code = <<-CODE
+        fun makeCounter() {
+          var i = 0;
+          fun count() {
+            i = i + 1;
+            print i;
+          }
+
+          return count;
+        }
+
+        var counter = makeCounter();
+        counter(); // "1".
+        counter(); // "2".
+      CODE
+      interpret_program(code)
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

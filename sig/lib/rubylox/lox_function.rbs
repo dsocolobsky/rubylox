@@ -5,9 +5,15 @@ module Rubylox
 
   class LoxFunction
     attr_reader declaration: FunctionStmt
+    attr_reader closure: Environment
 
     def arity: () -> int
     def initialize: (FunctionStmt declaration) -> void
     def call: (Interpreter interpreter, [Object] arguments) -> Object
+  end
+
+  class ReturnException < StandardError
+    attr_reader value: Object
+    def initialize: (Object value, string? message) -> void
   end
 end

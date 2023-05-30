@@ -76,7 +76,7 @@ module Rubylox
     end
 
     def visit_function_statement(stmt)
-      function = LoxFunction.new(stmt)
+      function = LoxFunction.new(stmt, @environment)
       @environment.define(stmt.name.lexeme, function)
       nil
     end
