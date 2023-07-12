@@ -7,6 +7,7 @@ module Rubylox
     # When resolving a variable, if we can not find it in a local scope
     # then we assume it must be global
     @scopes = []
+    @current_function = :function_none
 
     def initialize(interpreter)
       @interpreter = interpreter
@@ -25,7 +26,7 @@ module Rubylox
     def visit_function_statement(statement)
       declare(statement.name)
       define(statement.name)
-      resolve_function(statement)
+      resolve_function(statement, :function)
     end
 
     def visit_if_statement(statement)
@@ -39,6 +40,8 @@ module Rubylox
     end
 
     def visit_return_statement(statement)
+      raise error(statement.keyword, 'Cant return from top-level code') if @current_function == :function_none
+
       resolve(statement.value) unless statement.value.nil?
     end
 
@@ -57,6 +60,7 @@ module Rubylox
       if !@scopes.empty? && (@scopes.last[expression.name.lexeme] == false)
         raise error(expression.name, 'Cant read local variable in its own initializer')
       end
+
       resolve_local(expression, expression.name)
     end
 
@@ -100,7 +104,10 @@ module Rubylox
       end
     end
 
-    def resolve_function(function)
+    def resolve_function(function, function_type)
+      enclosing_function = @current_function
+      @current_function = function_type
+
       begin_scope
       function.parameters.each do |parameter|
         declare(parameter)
@@ -108,6 +115,8 @@ module Rubylox
       end
       resolve_list_of_statements(function.body)
       end_scope
+
+      @current_function = enclosing_function
     end
 
     def resolve(statement)
