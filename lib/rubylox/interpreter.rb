@@ -3,10 +3,11 @@ require 'rubylox/lox_function'
 module Rubylox
   class Interpreter
 
-    attr_reader :globals
+    attr_reader :globals, :locals
 
     def initialize
       @globals = Rubylox::Environment.new
+      @locals = {}
 
       @globals.define('clock', Class.new(LoxCallable) do
         def self.arity
@@ -46,6 +47,10 @@ module Rubylox
 
     def execute(statement)
       statement.accept(self)
+    end
+
+    def resolve(expression, depth)
+      @locals[expression] = depth
     end
 
     def visit_expression_statement(stmt)
@@ -92,12 +97,28 @@ module Rubylox
     end
 
     def visit_variable_expression(expr)
-      @environment.get(expr.name)
+      lookup_variable(expr.name, expr)
+    end
+
+    def lookup_variable(name, expr)
+      distance = @locals[expr]
+      if distance
+        @environment.get_at(distance, name.lexeme)
+      else
+        @globals.get(name)
+      end
     end
 
     def visit_assign_expression(expr)
       value = evaluate(expr.value)
-      @environment.assign(expr.name, value)
+
+      distance = @locals[expr]
+      if distance
+        @environment.assign_at(distance, expr.name, value)
+      else
+        @globals.assign(expr.name, value)
+      end
+
       value
     end
 

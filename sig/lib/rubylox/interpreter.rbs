@@ -8,6 +8,7 @@ module Rubylox
 
     def execute_block: (Array[statement], Environment) -> void
     def execute: (statement) -> void
+    def resolve: (expression, int) -> void
 
     def visit_expression_statement: (ExpressionStmt) -> void
     def visit_block_statement: (BlockStmt) -> void
@@ -20,6 +21,7 @@ module Rubylox
 
     def visit_literal_expression: (LiteralExpression) -> untyped
     def visit_variable_expression: (VariableExpression) -> untyped
+    def look_up_variable: (Token, expression) -> untyped
     def visit_assign_expression: (AssignExpression) -> untyped
     def visit_grouping_expression: (GroupingExpression) -> untyped
     def visit_unary_expression: (UnaryExpression) -> untyped
