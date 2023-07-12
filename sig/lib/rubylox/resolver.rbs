@@ -1,0 +1,34 @@
+module Rubylox
+  class Resolver
+    def initialize: (untyped interpreter) -> void
+
+    def visit_block_statement: (BlockStmt) -> void
+    def visit_expression_statement: (ExpressionStmt) -> void
+    def visit_function_statement: (FunctionStmt) -> void
+    def visit_if_statement: (IfStmt) -> void
+    def visit_print_statement: (PrintStmt) -> void
+    def visit_return_statement: (ReturnStmt) -> void
+    def visit_while_statement: (WhileStmt) -> void
+    def visit_variable_statement: (VariableStmt) -> void
+
+    def visit_variable_expression: (VariableExpression) -> void
+    def visit_assignment_expression: (AssignExpression) -> void
+    def visit_binary_expression: (BinaryExpression) -> void
+    def visit_call_expression: (CallExpression) -> void
+    def visit_grouping_expression: (GroupingExpression) -> void
+    def visit_literal_expression: (LiteralExpression) -> void
+    def visit_logical_expression: (LogicalExpression) -> void
+    def visit_unary_expression: (UnaryExpression) -> void
+
+    def resolve_list_of_statements: ([statement]) -> void
+    def resolve: (statement | expression) -> void
+    def resolve_function: (FunctionStmt) -> void
+    def resolve_expression: (ExpressionStmt) -> void
+    def resolve_local: (expression, Token name) -> void
+
+    def begin_scope: (void) -> void
+    def end_scope: (void) -> void
+    def declare: (Token name) -> void
+    def define: (Token name) -> void
+  end
+end
