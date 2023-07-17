@@ -3,6 +3,7 @@ require 'rubylox/scanner'
 require 'rubylox/expressions'
 require 'rubylox/parser'
 require 'rubylox/token'
+require 'rubylox/resolver'
 require 'rubylox/interpreter'
 require 'rubylox/environment'
 
@@ -163,6 +164,8 @@ class TestInterpreter < Minitest::Test
     parser = Rubylox::Parser.new(tokens)
     expression = parser.parse
     interpreter = Rubylox::Interpreter.new
+    resolver = Rubylox::Resolver.new(interpreter)
+    resolver.resolve_list_of_statements(expression)
     interpreter.interpret(expression)
   end
 end

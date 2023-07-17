@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 module Rubylox
   class Resolver
-    @interpreter = nil
-    # This is a stack of Hashmap<String,Boolean>
-    # Each HashMap representing a single scope.
-    # When resolving a variable, if we can not find it in a local scope
-    # then we assume it must be global
-    @scopes = []
-    @current_function = :function_none
-
     def initialize(interpreter)
       @interpreter = interpreter
+      # This is a stack of Hashmap<String,Boolean>
+      # Each HashMap representing a single scope.
+      # When resolving a variable, if we can not find it in a local scope
+      # then we assume it must be global
+      @scopes = []
+      @current_function = :function_none
     end
 
     def visit_block_statement(statement)
@@ -100,7 +98,7 @@ module Rubylox
 
     def resolve_list_of_statements(statements)
       statements.each do |statement|
-        resolve_statement(statement)
+        resolve(statement)
       end
     end
 
@@ -113,7 +111,7 @@ module Rubylox
         declare(parameter)
         define(parameter)
       end
-      resolve_list_of_statements(function.body)
+      resolve_list_of_statements(function.body.statements)
       end_scope
 
       @current_function = enclosing_function

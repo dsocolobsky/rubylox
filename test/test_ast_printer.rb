@@ -24,7 +24,7 @@ class AstPrinterTest < Minitest::Test
   def test_print_unary_expression
     # create a unary expression
     negation = Rubylox::UnaryExpression.new(
-      Rubylox::Token.new(:MINUS, '-', nil, 1),
+      Rubylox::Token.new(:minus, '-', nil, 1),
       Rubylox::LiteralExpression.new(123)
     )
 
@@ -35,7 +35,7 @@ class AstPrinterTest < Minitest::Test
   def test_print_binary_expression
     binary = Rubylox::BinaryExpression.new(
       Rubylox::LiteralExpression.new(123),
-      Rubylox::Token.new(:STAR, '*', nil, 1),
+      Rubylox::Token.new(:star, '*', nil, 1),
       Rubylox::LiteralExpression.new(456)
     )
 
@@ -57,10 +57,10 @@ class AstPrinterTest < Minitest::Test
   def test_print_combined_expressions
     binary = Rubylox::BinaryExpression.new(
       Rubylox::LiteralExpression.new(1),
-      Rubylox::Token.new(:PLUS, '+', nil, 1),
+      Rubylox::Token.new(:plus, '+', nil, 1),
       Rubylox::BinaryExpression.new(
         Rubylox::LiteralExpression.new(2),
-        Rubylox::Token.new(:STAR, '*', nil, 1),
+        Rubylox::Token.new(:star, '*', nil, 1),
         Rubylox::LiteralExpression.new(3)
       )
     )

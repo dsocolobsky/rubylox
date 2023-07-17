@@ -76,7 +76,7 @@ module Rubylox
     end
   end
 
-  class AssignExpression
+  class AssignmentExpression
     def initialize(name, value)
       @name = name
       @value = value
@@ -85,7 +85,7 @@ module Rubylox
     attr_reader :name, :value
 
     def accept(visitor)
-      visitor.visit_assign_expression(self)
+      visitor.visit_assignment_expression(self)
     end
   end
 

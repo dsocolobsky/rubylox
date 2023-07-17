@@ -109,7 +109,7 @@ module Rubylox
       end
     end
 
-    def visit_assign_expression(expr)
+    def visit_assignment_expression(expr)
       value = evaluate(expr.value)
 
       distance = @locals[expr]

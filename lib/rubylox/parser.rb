@@ -132,7 +132,7 @@ module Rubylox
 
         if expr.is_a?(VariableExpression)
           name = expr.name
-          return Rubylox::AssignExpression.new(name, value)
+          return Rubylox::AssignmentExpression.new(name, value)
         end
 
         raise error(equals, 'Invalid assignment target.')

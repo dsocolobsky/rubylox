@@ -2,6 +2,7 @@ module Rubylox
   class Interpreter
     attr_reader environment: Environment
     attr_reader globals: Environment
+    attr_reader locals: ::Hash[expression, Integer]
 
     def initialize: () -> void
     def interpret: (Array[statement]) -> untyped
@@ -22,7 +23,7 @@ module Rubylox
     def visit_literal_expression: (LiteralExpression) -> untyped
     def visit_variable_expression: (VariableExpression) -> untyped
     def look_up_variable: (Token, expression) -> untyped
-    def visit_assign_expression: (AssignExpression) -> untyped
+    def visit_assignment_expression: (AssignExpression) -> untyped
     def visit_grouping_expression: (GroupingExpression) -> untyped
     def visit_unary_expression: (UnaryExpression) -> untyped
     def visit_binary_expression: (BinaryExpression) -> untyped
