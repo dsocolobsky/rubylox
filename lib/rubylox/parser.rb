@@ -18,10 +18,23 @@ module Rubylox
     end
 
     def parse_declaration
+      return parse_class_declaration if match(:class)
       return parse_function_declaration('function') if match(:fun)
       return parse_variable_declaration if match(:var)
 
       parse_statement
+    end
+
+    def parse_class_declaration
+      name = consume(:identifier, 'Expect class name.')
+
+      consume(:left_brace, "Expect '{' before class body.")
+
+      methods = []
+      methods << parse_function_declaration('method') until match(:right_brace) || at_end?
+
+      superclass = nil # This will change later
+      Rubylox::ClassStmt.new(name, superclass, methods)
     end
 
     def parse_function_declaration(kind)

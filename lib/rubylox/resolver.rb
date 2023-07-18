@@ -17,6 +17,11 @@ module Rubylox
       end_scope
     end
 
+    def visit_class_statement(statement)
+      declare(statement.name)
+      define(statement.name)
+    end
+
     def visit_expression_statement(statement)
       resolve(statement.expression)
     end

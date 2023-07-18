@@ -1,0 +1,11 @@
+module Rubylox
+  class LoxClass
+    def initialize: () -> void
+
+    attr_reader name: string
+
+    def call: (Interpreter interpreter, [untyped] arguments) -> LoxInstance
+    def arity: () -> int
+    def to_s: () -> ::String
+  end
+end

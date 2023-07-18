@@ -1,4 +1,5 @@
 require 'rubylox/lox_function'
+require 'rubylox/lox_class'
 
 module Rubylox
   class Interpreter
@@ -70,6 +71,12 @@ module Rubylox
 
     def visit_block_statement(stmt)
       execute_block(stmt.statements, Environment.new(@environment))
+    end
+
+    def visit_class_statement(stmt)
+      @environment.define(stmt.name.lexeme, nil)
+      kclass = LoxClass.new(stmt.name.lexeme)
+      @environment.assign(stmt.name, kclass)
     end
 
     def visit_if_statement(stmt)

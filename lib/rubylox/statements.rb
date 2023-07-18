@@ -102,4 +102,19 @@ module Rubylox
       visitor.visit_return_statement(self)
     end
   end
+
+  # A statement representing a class declaration
+  class ClassStmt
+    def initialize(name, superclass, methods)
+      @name = name
+      @superclass = superclass
+      @methods = methods
+    end
+
+    attr_reader :name, :superclass, :methods
+
+    def accept(visitor)
+      visitor.visit_class_statement(self)
+    end
+  end
 end

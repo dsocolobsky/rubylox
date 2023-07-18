@@ -3,6 +3,7 @@ module Rubylox
     def initialize: (untyped interpreter) -> void
 
     def visit_block_statement: (BlockStmt) -> void
+    def visit_class_statement: (ClassStmt) -> void
     def visit_expression_statement: (ExpressionStmt) -> void
     def visit_function_statement: (FunctionStmt) -> void
     def visit_if_statement: (IfStmt) -> void

@@ -214,6 +214,28 @@ class TestParser < Minitest::Test
     assert_equal 1.0, return_stmt.value.value
   end
 
+  def test_parse_empty_class_declaration
+    code = <<~CODE
+      class Foo {
+      }
+      Foo();
+    CODE
+
+    tokens = Rubylox::Scanner.new(code).scan_tokens
+    parser = Rubylox::Parser.new(tokens)
+    statements = parser.parse
+    assert_equal 2, statements.length
+
+    class_stmt = statements[0]
+    assert_instance_of Rubylox::ClassStmt, class_stmt
+    assert_equal 'Foo', class_stmt.name.lexeme
+
+    call_stmt = statements[1]
+    assert_instance_of Rubylox::CallExpression, call_stmt.expression
+    assert_instance_of Rubylox::VariableExpression, call_stmt.expression.callee
+    assert_equal 'Foo', call_stmt.expression.callee.name.lexeme
+  end
+
   def scan_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

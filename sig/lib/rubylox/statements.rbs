@@ -72,4 +72,14 @@ module Rubylox
 
     def accept: (Interpreter visitor) -> void
   end
+
+  class ClassStmt
+    def initialize: (Token name, VariableExpression superclass, Array[FunctionStmt] methods) -> void
+
+    attr_reader name: Token
+    attr_reader superclass: VariableExpression
+    attr_reader methods: Array[FunctionStmt]
+
+    def accept: (Interpreter visitor) -> void
+  end
 end
