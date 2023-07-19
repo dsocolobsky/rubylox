@@ -171,6 +171,19 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_class_assign_access_field
+    assert_output(/blue/) do
+      code = <<-CODE
+        class Bagel {
+        }
+        var bagel = Bagel();
+        bagel.color = "blue";
+        print bagel.color;
+      CODE
+      interpret_program(code)
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

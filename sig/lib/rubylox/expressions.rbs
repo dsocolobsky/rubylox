@@ -85,4 +85,14 @@ module Rubylox
 
     def accept: (Interpreter visitor) -> void
   end
+
+  class SetExpression
+    def initialize: (expression object, Token name, expression value) -> void
+
+    attr_reader object: expression
+    attr_reader name: Token
+    attr_reader value: expression
+
+    def accept: (Interpreter visitor) -> void
+  end
 end

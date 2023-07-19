@@ -15,6 +15,10 @@ module Rubylox
       end
     end
 
+    def set(name, value)
+      @fields[name.lexeme] = value
+    end
+
     def to_s
       "<instance of #{@klass}>"
     end

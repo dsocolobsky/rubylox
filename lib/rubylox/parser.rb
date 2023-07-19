@@ -143,12 +143,16 @@ module Rubylox
         equals = previous
         value = parse_assignment
 
-        if expr.is_a?(VariableExpression)
+        case expr
+        when VariableExpression
           name = expr.name
           return Rubylox::AssignmentExpression.new(name, value)
+        when GetExpression
+          get = expr
+          return Rubylox::SetExpression.new(get.object, get.name, value)
+        else
+          raise error(equals, 'Invalid assignment target.')
         end
-
-        raise error(equals, 'Invalid assignment target.')
       end
 
       expr

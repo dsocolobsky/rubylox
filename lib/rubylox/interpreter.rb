@@ -216,6 +216,14 @@ module Rubylox
       end
     end
 
+    def visit_set_expression(expression)
+      object = evaluate(expression.object)
+      raise 'Only instances have fields' unless object.is_a?(LoxInstance)
+
+      value = evaluate(expression.value)
+      object.set(expression.name, value)
+    end
+
     def visit_while_statement(expr)
       execute(expr.body) while is_truthy(evaluate(expr.condition))
     end

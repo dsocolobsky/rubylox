@@ -115,4 +115,18 @@ module Rubylox
       visitor.visit_get_expression(self)
     end
   end
+
+  class SetExpression
+    def initialize(object, name, value)
+      @object = object
+      @name = name
+      @value = value
+    end
+
+    attr_reader :object, :name, :value
+
+    def accept(visitor)
+      visitor.visit_set_expression(self)
+    end
+  end
 end
