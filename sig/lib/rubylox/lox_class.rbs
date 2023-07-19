@@ -1,9 +1,11 @@
 module Rubylox
   class LoxClass
-    def initialize: () -> void
+    def initialize: (string name, [Object] methods) -> void
 
     attr_reader name: string
+    attr_reader methods: [Object]
 
+    def find_method: (string name) -> Object
     def call: (Interpreter interpreter, [untyped] arguments) -> LoxInstance
     def arity: () -> int
     def to_s: () -> ::String

@@ -20,6 +20,11 @@ module Rubylox
     def visit_class_statement(statement)
       declare(statement.name)
       define(statement.name)
+
+      statement.methods.each do |method|
+        function_type = :method
+        resolve_function(method, function_type)
+      end
     end
 
     def visit_expression_statement(statement)

@@ -11,6 +11,9 @@ module Rubylox
       if @fields.key?(name.lexeme)
         @fields[name.lexeme]
       else
+        method = @klass.find_method(name.lexeme)
+        return method if method
+
         raise error(name, "Undefined property '#{name.lexeme}'.")
       end
     end

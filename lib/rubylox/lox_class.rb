@@ -2,15 +2,19 @@ require 'rubylox/lox_instance'
 
 module Rubylox
   class LoxClass
-    def initialize(name)
+    def initialize(name, methods)
       @name = name
+      @methods = methods
     end
 
-    attr_reader :name
+    attr_reader :name, :methods
+
+    def find_method(name)
+      @methods[name]
+    end
 
     def call(interpreter, arguments)
-      instance = LoxInstance.new(self)
-      instance
+      LoxInstance.new(self)
     end
 
     def arity

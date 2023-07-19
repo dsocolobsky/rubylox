@@ -184,6 +184,21 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_class_simple_method
+    assert_output(/I am a bagel/) do
+      code = <<-CODE
+        class Bagel {
+          say() {
+            print "I am a bagel";
+          }
+        }
+        var bagel = Bagel();
+        bagel.say();
+      CODE
+      interpret_program(code)
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

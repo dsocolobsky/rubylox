@@ -19,6 +19,7 @@ module Rubylox
     def visit_function_statement: (FunctionStmt) -> untyped
     def visit_return_statement: (ReturnStmt) -> untyped
     def visit_while_statement: (WhileStmt) -> untyped
+    def visit_class_statement: (ClassStmt) -> void
 
     def visit_literal_expression: (LiteralExpression) -> untyped
     def visit_variable_expression: (VariableExpression) -> untyped

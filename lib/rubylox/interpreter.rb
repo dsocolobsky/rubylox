@@ -75,7 +75,14 @@ module Rubylox
 
     def visit_class_statement(stmt)
       @environment.define(stmt.name.lexeme, nil)
-      kclass = LoxClass.new(stmt.name.lexeme)
+
+      methods = {}
+      stmt.methods.each do |method|
+        function = LoxFunction.new(method, @environment)
+        methods[method.name.lexeme] = function
+      end
+
+      kclass = LoxClass.new(stmt.name.lexeme, methods)
       @environment.assign(stmt.name, kclass)
     end
 
