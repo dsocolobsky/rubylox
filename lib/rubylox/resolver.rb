@@ -84,6 +84,10 @@ module Rubylox
       end
     end
 
+    def visit_get_expression(expression)
+      resolve(expression.object)
+    end
+
     def visit_grouping_expression(expression)
       resolve(expression.expression)
     end

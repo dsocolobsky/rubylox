@@ -1,7 +1,10 @@
 module Rubylox
   class LoxInstance
-    def initialize: () -> void
-
+    def initialize: (Class kclass) -> void
+    def get: (name: Token) -> Object
     def to_s: () -> ::String
+
+    attr_reader klass: Class
+    attr_reader fields: Hash[Token, Object]
   end
 end

@@ -16,6 +16,7 @@ module Rubylox
     def visit_assignment_expression: (AssignExpression) -> void
     def visit_binary_expression: (BinaryExpression) -> void
     def visit_call_expression: (CallExpression) -> void
+    def visit_get_expression: (GetExpression) -> void
     def visit_grouping_expression: (GroupingExpression) -> void
     def visit_literal_expression: (LiteralExpression) -> void
     def visit_logical_expression: (LogicalExpression) -> void

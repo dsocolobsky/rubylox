@@ -243,6 +243,9 @@ module Rubylox
       loop do
         if match(:left_paren)
           expr = finish_call(expr)
+        elsif match(:dot)
+          name = consume(:identifier, "Expect property name after '.'.")
+          expr = GetExpression.new(expr, name)
         else
           break
         end

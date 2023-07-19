@@ -102,4 +102,17 @@ module Rubylox
       visitor.visit_call_expression(self)
     end
   end
+
+  class GetExpression
+    def initialize(object, name)
+      @object = object
+      @name = name
+    end
+
+    attr_reader :object, :name
+
+    def accept(visitor)
+      visitor.visit_get_expression(self)
+    end
+  end
 end

@@ -207,6 +207,15 @@ module Rubylox
       function.call(self, arguments)
     end
 
+    def visit_get_expression(expression)
+      object = evaluate(expression.object)
+      if object.is_a?(LoxInstance)
+        object.get(expression.name)
+      else
+        raise 'Only instances have properties'
+      end
+    end
+
     def visit_while_statement(expr)
       execute(expr.body) while is_truthy(evaluate(expr.condition))
     end

@@ -68,8 +68,21 @@ module Rubylox
   end
 
   class CallExpression
-    def initialize: (expression callee, untyped paren, untyped arguments) -> void
+    def initialize: (expression callee, untyped paren, [Object] arguments) -> void
 
-    def accept: (untyped visitor) -> void
+    attr_reader callee: expression
+    attr_reader paren: untyped
+    attr_reader arguments: [Object]
+
+    def accept: (Interpreter visitor) -> void
+  end
+
+  class GetExpression
+    def initialize: (expression object, Token name) -> void
+
+    attr_reader object: expression
+    attr_reader name: Token
+
+    def accept: (Interpreter visitor) -> void
   end
 end
