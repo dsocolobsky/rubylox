@@ -199,6 +199,22 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_class_this
+    assert_output(/blue/) do
+      code = <<-CODE
+        class Bagel {
+          say() {
+            print this.color;
+          }
+        }
+        var bagel = Bagel();
+        bagel.color = "blue";
+        bagel.say();
+      CODE
+      interpret_program(code)
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

@@ -231,6 +231,10 @@ module Rubylox
       object.set(expression.name, value)
     end
 
+    def visit_this_expression(expression)
+      lookup_variable(expression.keyword, expression)
+    end
+
     def visit_while_statement(expr)
       execute(expr.body) while is_truthy(evaluate(expr.condition))
     end

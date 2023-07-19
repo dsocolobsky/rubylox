@@ -9,6 +9,7 @@ module Rubylox
       # then we assume it must be global
       @scopes = []
       @current_function = :function_none
+      @current_class = :class_none
     end
 
     def visit_block_statement(statement)
@@ -18,13 +19,20 @@ module Rubylox
     end
 
     def visit_class_statement(statement)
+      enclosing_class = @current_class
+      @current_class = :class
       declare(statement.name)
       define(statement.name)
+
+      begin_scope
+      @scopes.last['this'] = true
 
       statement.methods.each do |method|
         function_type = :method
         resolve_function(method, function_type)
       end
+      end_scope
+      @current_class = enclosing_class
     end
 
     def visit_expression_statement(statement)
@@ -96,6 +104,12 @@ module Rubylox
     def visit_set_expression(expression)
       resolve(expression.value)
       resolve(expression.object)
+    end
+
+    def visit_this_expression(expression)
+      raise error(expression.keyword, 'Cant use this outside of a class') if @current_class == :class_none
+
+      resolve_local(expression, expression.keyword)
     end
 
     def visit_grouping_expression(expression)

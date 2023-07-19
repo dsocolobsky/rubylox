@@ -32,6 +32,12 @@ module Rubylox
 
       nil
     end
+
+    def bind(instance)
+      environment = Rubylox::Environment.new(@closure)
+      environment.define('this', instance)
+      LoxFunction.new(@declaration, environment)
+    end
   end
 
   class ReturnException < StandardError

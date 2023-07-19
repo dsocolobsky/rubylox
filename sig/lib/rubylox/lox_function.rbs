@@ -10,6 +10,7 @@ module Rubylox
     def arity: () -> int
     def initialize: (FunctionStmt declaration) -> void
     def call: (Interpreter interpreter, [Object] arguments) -> Object
+    def bind: (LoxInstance) -> LoxFunction
   end
 
   class ReturnException < StandardError

@@ -129,4 +129,16 @@ module Rubylox
       visitor.visit_set_expression(self)
     end
   end
+
+  class ThisExpression
+    def initialize(keyword)
+      @keyword = keyword
+    end
+
+    attr_reader :keyword
+
+    def accept(visitor)
+      visitor.visit_this_expression(self)
+    end
+  end
 end

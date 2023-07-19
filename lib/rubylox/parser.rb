@@ -279,6 +279,7 @@ module Rubylox
       return LiteralExpression.new(true) if match(:true)
       return LiteralExpression.new(nil) if match(:nil)
       return LiteralExpression.new(previous.literal) if match(:number, :string)
+      return ThisExpression.new(previous) if match(:this)
       return VariableExpression.new(previous) if match(:identifier)
 
       if match(:left_paren)

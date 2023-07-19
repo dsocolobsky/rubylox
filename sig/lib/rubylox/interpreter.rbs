@@ -23,7 +23,7 @@ module Rubylox
 
     def visit_literal_expression: (LiteralExpression) -> untyped
     def visit_variable_expression: (VariableExpression) -> untyped
-    def look_up_variable: (Token, expression) -> untyped
+    def lookup_variable: (Token, expression) -> Object
     def visit_assignment_expression: (AssignExpression) -> untyped
     def visit_grouping_expression: (GroupingExpression) -> untyped
     def visit_unary_expression: (UnaryExpression) -> untyped
@@ -32,6 +32,7 @@ module Rubylox
     def visit_call_expression: (CallExpression) -> untyped
     def visit_get_expression: (GetExpression) -> untyped
     def visit_set_expression: (SetExpression) -> void
+    def visit_this_expression: (ThisExpression) -> Object
 
     def evaluate: (expression) -> untyped
     def is_truthy: (untyped object) -> bool

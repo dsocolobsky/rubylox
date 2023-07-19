@@ -12,7 +12,7 @@ module Rubylox
         @fields[name.lexeme]
       else
         method = @klass.find_method(name.lexeme)
-        return method if method
+        return method.bind(self) if method
 
         raise error(name, "Undefined property '#{name.lexeme}'.")
       end

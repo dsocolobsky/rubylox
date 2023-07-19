@@ -95,4 +95,12 @@ module Rubylox
 
     def accept: (Interpreter visitor) -> void
   end
+
+  class ThisExpression
+    def initialize: (Token keyword) -> void
+
+    attr_reader keyword: Token
+
+    def accept: (Interpreter visitor) -> void
+  end
 end
