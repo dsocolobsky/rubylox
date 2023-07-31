@@ -6,11 +6,13 @@ module Rubylox
   class LoxFunction
     attr_reader declaration: FunctionStmt
     attr_reader closure: Environment
+    attr_reader is_initializer: bool
 
+    def initialize: (FunctionStmt declaration, Environment closure, bool is_initializer) -> void
     def arity: () -> int
-    def initialize: (FunctionStmt declaration) -> void
-    def call: (Interpreter interpreter, [Object] arguments) -> Object
+    def call: (Interpreter interpreter, [Object] arguments) -> Object?
     def bind: (LoxInstance) -> LoxFunction
+    def functions_object: () -> Object
   end
 
   class ReturnException < StandardError

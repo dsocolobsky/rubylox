@@ -12,6 +12,6 @@ This is a Ruby 3.x interpreter of the Lox programming language from
 - [x] Control Flow
 - [x] Function Calling
 - [x] Function Definition
-- [ ] Resolving and Binding
-- [ ] Classes
+- [x] Resolving and Binding
+- [x] Classes
 - [ ] Inheritance

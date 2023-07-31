@@ -199,6 +199,22 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_class_unknown_method
+    err = assert_raises RuntimeError do
+      code = <<-CODE
+        class Bagel {
+          say() {
+            print "I am a bagel";
+          }
+        }
+        var bagel = Bagel();
+        bagel.cook();
+      CODE
+      interpret_program(code)
+    end
+    assert_equal("Undefined property or method 'cook' for <instance of Bagel>", err.message)
+  end
+
   def test_class_this
     assert_output(/blue/) do
       code = <<-CODE
@@ -209,6 +225,25 @@ class TestInterpreter < Minitest::Test
         }
         var bagel = Bagel();
         bagel.color = "blue";
+        bagel.say();
+      CODE
+      interpret_program(code)
+    end
+  end
+
+  def test_class_init
+    assert_output(/yellow,15/) do
+      code = <<-CODE
+        class Bagel {
+          init(color, weight) {
+            this.color = color;
+            this.weight = weight;
+          }
+          say() {
+            print this.color + "," + this.weight;
+          }
+        }
+        var bagel = Bagel("yellow", "15");
         bagel.say();
       CODE
       interpret_program(code)

@@ -14,11 +14,15 @@ module Rubylox
     end
 
     def call(interpreter, arguments)
-      LoxInstance.new(self)
+      instance = LoxInstance.new(self)
+      initializer = find_method('init')
+      initializer&.bind(instance)&.(interpreter, arguments)
+      instance
     end
 
     def arity
-      0
+      initializer = find_method('init')
+      initializer&.arity || 0
     end
 
     def to_s

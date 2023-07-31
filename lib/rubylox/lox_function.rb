@@ -6,16 +6,15 @@ module Rubylox
   end
 
   class LoxFunction < LoxCallable
-    @declaration = nil
-    @closure = nil
+    def initialize(declaration, closure, is_initializer: false)
+      super()
+      @declaration = declaration
+      @closure = closure
+      @is_initializer = is_initializer
+    end
 
     def arity
       @declaration.parameters.length
-    end
-
-    def initialize(declaration, closure)
-      @declaration = declaration
-      @closure = closure
     end
 
     def call(interpreter, arguments)
@@ -27,16 +26,24 @@ module Rubylox
       begin
         interpreter.execute_block(@declaration.body.statements, environment)
       rescue ReturnException => e
+        return functions_object if @is_initializer
+
         return e.value
       end
 
-      nil
+      if @is_initializer
+        functions_object
+      end
     end
 
     def bind(instance)
       environment = Rubylox::Environment.new(@closure)
       environment.define('this', instance)
-      LoxFunction.new(@declaration, environment)
+      LoxFunction.new(@declaration, environment, is_initializer: @is_initializer)
+    end
+
+    def functions_object
+      @closure.get_at(0, 'this')
     end
   end
 

@@ -14,7 +14,7 @@ module Rubylox
         method = @klass.find_method(name.lexeme)
         return method.bind(self) if method
 
-        raise error(name, "Undefined property '#{name.lexeme}'.")
+        raise "Undefined property or method '#{name.lexeme}' for <instance of #{@klass}>"
       end
     end
 

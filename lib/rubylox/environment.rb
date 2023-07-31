@@ -28,7 +28,6 @@ module Rubylox
         @values[key]
       elsif @enclosing # Ask the parent scope if it has the variable
         @enclosing.get(name)
-
       else
         raise "Undefined variable #{name}"
       end

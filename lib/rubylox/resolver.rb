@@ -28,7 +28,7 @@ module Rubylox
       @scopes.last['this'] = true
 
       statement.methods.each do |method|
-        function_type = :method
+        function_type = method.name.lexeme == 'init' ? :initializer : :method
         resolve_function(method, function_type)
       end
       end_scope
@@ -57,6 +57,8 @@ module Rubylox
 
     def visit_return_statement(statement)
       raise error(statement.keyword, 'Cant return from top-level code') if @current_function == :function_none
+      return if statement.value.nil?
+      raise error(statement.keyword, 'Cant return a value from an initializer') if @current_function == :initializer
 
       resolve(statement.value) unless statement.value.nil?
     end

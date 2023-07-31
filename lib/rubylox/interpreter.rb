@@ -78,7 +78,7 @@ module Rubylox
 
       methods = {}
       stmt.methods.each do |method|
-        function = LoxFunction.new(method, @environment)
+        function = LoxFunction.new(method, @environment, is_initializer: method.name.lexeme == 'init')
         methods[method.name.lexeme] = function
       end
 
