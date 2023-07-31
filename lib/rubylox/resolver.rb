@@ -26,8 +26,18 @@ module Rubylox
 
       unless statement.superclass.nil?
         class_name = statement.name.lexeme
-        raise "Class #{class_name}: A class can not inherit from itself" if statement.superclass.name.lexeme == class_name
+        if statement.superclass.name.lexeme == class_name
+          raise "Class #{class_name}: A class can not inherit from itself"
+        end
+
+        @current_class = :subclass
         resolve(statement.superclass)
+      end
+
+      # if the current class has a superclass then create a new scope and define super in it
+      unless statement.superclass.nil?
+        begin_scope
+        @scopes.last['super'] = true
       end
 
       begin_scope
@@ -38,6 +48,7 @@ module Rubylox
         resolve_function(method, function_type)
       end
       end_scope
+      end_scope unless statement.superclass.nil?
       @current_class = enclosing_class
     end
 
@@ -112,6 +123,13 @@ module Rubylox
     def visit_set_expression(expression)
       resolve(expression.value)
       resolve(expression.object)
+    end
+
+    def visit_super_expression(expression)
+      raise 'Cant use super outside of a class' if @current_class == :class_none
+      raise 'Cant use super in a class with no superclass' if @current_class != :subclass
+
+      resolve_local(expression, expression.keyword)
     end
 
     def visit_this_expression(expression)

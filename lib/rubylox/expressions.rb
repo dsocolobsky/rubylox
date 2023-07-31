@@ -141,4 +141,17 @@ module Rubylox
       visitor.visit_this_expression(self)
     end
   end
+
+  class SuperExpression
+    def initialize(keyword, method)
+      @keyword = keyword
+      @method = method
+    end
+
+    attr_reader :keyword, :method
+
+    def accept(visitor)
+      visitor.visit_super_expression(self)
+    end
+  end
 end

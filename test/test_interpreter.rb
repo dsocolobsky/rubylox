@@ -267,6 +267,35 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_inheritance_super
+    assert_output(/class D\nclass A\nclass B/) do
+      code = <<-CODE
+          class A {
+            say() {
+              print "class A";
+            }
+          }
+          class B < A {
+            say() {
+              super.say();
+              print "class B";
+            }
+          }
+          class C < B {
+          }
+          class D < C {
+            say() {
+              print "class D";
+              super.say();
+            }
+          }
+          var d = D();
+          d.say();
+      CODE
+      interpret_program(code)
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

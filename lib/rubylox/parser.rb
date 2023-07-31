@@ -284,6 +284,14 @@ module Rubylox
       return LiteralExpression.new(true) if match(:true)
       return LiteralExpression.new(nil) if match(:nil)
       return LiteralExpression.new(previous.literal) if match(:number, :string)
+
+      if match(:super)
+        keyword = previous
+        consume(:dot, "Expect '.' after 'super'")
+        method = consume(:identifier, 'Expect superclass method name')
+        return SuperExpression.new(keyword, method)
+      end
+
       return ThisExpression.new(previous) if match(:this)
       return VariableExpression.new(previous) if match(:identifier)
 

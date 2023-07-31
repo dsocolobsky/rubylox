@@ -81,6 +81,11 @@ module Rubylox
 
       @environment.define(stmt.name.lexeme, nil)
 
+      unless stmt.superclass.nil?
+        @environment = Environment.new(@environment)
+        @environment.define('super', superclass)
+      end
+
       methods = {}
       stmt.methods.each do |method|
         function = LoxFunction.new(method, @environment, is_initializer: method.name.lexeme == 'init')
@@ -88,6 +93,7 @@ module Rubylox
       end
 
       kclass = LoxClass.new(stmt.name.lexeme, methods, superclass)
+      @environment = @environment.enclosing if stmt.superclass
       @environment.assign(stmt.name, kclass)
     end
 
@@ -234,6 +240,16 @@ module Rubylox
 
       value = evaluate(expression.value)
       object.set(expression.name, value)
+    end
+
+    def visit_super_expression(expression)
+      distance = @locals[expression]
+      superclass = @environment.get_at(distance, 'super')
+      object = @environment.get_at(distance - 1, 'this')
+      method = superclass.find_method(expression.method.lexeme)
+      raise "Undefined property '#{expression.method.lexeme}'" unless method
+
+      method.bind(object)
     end
 
     def visit_this_expression(expression)

@@ -32,6 +32,7 @@ module Rubylox
     def visit_call_expression: (CallExpression) -> untyped
     def visit_get_expression: (GetExpression) -> untyped
     def visit_set_expression: (SetExpression) -> void
+    def visit_super_expression: (SuperExpression) -> void
     def visit_this_expression: (ThisExpression) -> Object
 
     def evaluate: (expression) -> untyped

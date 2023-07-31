@@ -103,4 +103,13 @@ module Rubylox
 
     def accept: (Interpreter visitor) -> void
   end
+
+  class SuperExpression
+    def initialize: (Token keyword, Token method) -> void
+
+    attr_reader keyword: Token
+    attr_reader method: Token
+
+    def accept: (Interpreter visitor) -> void
+  end
 end
