@@ -28,12 +28,17 @@ module Rubylox
     def parse_class_declaration
       name = consume(:identifier, 'Expect class name.')
 
+      # Optionally parse (ChildClass < SuperClass)
+      if match(:less)
+        consume(:identifier, 'Expect superclass name.')
+        superclass = VariableExpression.new(previous)
+      end
+
       consume(:left_brace, "Expect '{' before class body.")
 
       methods = []
       methods << parse_function_declaration('method') until match(:right_brace) || at_end?
 
-      superclass = nil # This will change later
       Rubylox::ClassStmt.new(name, superclass, methods)
     end
 

@@ -24,6 +24,12 @@ module Rubylox
       declare(statement.name)
       define(statement.name)
 
+      unless statement.superclass.nil?
+        class_name = statement.name.lexeme
+        raise "Class #{class_name}: A class can not inherit from itself" if statement.superclass.name.lexeme == class_name
+        resolve(statement.superclass)
+      end
+
       begin_scope
       @scopes.last['this'] = true
 

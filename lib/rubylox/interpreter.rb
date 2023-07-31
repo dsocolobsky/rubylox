@@ -74,6 +74,11 @@ module Rubylox
     end
 
     def visit_class_statement(stmt)
+      unless stmt.superclass.nil?
+        superclass = evaluate(stmt.superclass)
+        raise 'Superclass must be a class' unless superclass.is_a?(LoxClass)
+      end
+
       @environment.define(stmt.name.lexeme, nil)
 
       methods = {}
@@ -82,7 +87,7 @@ module Rubylox
         methods[method.name.lexeme] = function
       end
 
-      kclass = LoxClass.new(stmt.name.lexeme, methods)
+      kclass = LoxClass.new(stmt.name.lexeme, methods, superclass)
       @environment.assign(stmt.name, kclass)
     end
 

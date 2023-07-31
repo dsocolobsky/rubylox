@@ -250,6 +250,23 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_inheritance_parent_method
+    assert_output(/guau guau/) do
+      code = <<-CODE
+          class Dog {
+            bark() {
+              print "guau guau";
+            }
+          }
+          class Spaniel < Dog {
+          }
+          var spaniel = Spaniel();
+          spaniel.bark();
+      CODE
+      interpret_program(code)
+    end
+  end
+
   def interpret_program(source)
     tokens = Rubylox::Scanner.new(source).scan_tokens
     parser = Rubylox::Parser.new(tokens)

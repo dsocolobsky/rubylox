@@ -2,15 +2,20 @@ require 'rubylox/lox_instance'
 
 module Rubylox
   class LoxClass
-    def initialize(name, methods)
+    def initialize(name, methods, superclass)
       @name = name
       @methods = methods
+      @superclass = superclass
     end
 
     attr_reader :name, :methods
 
     def find_method(name)
-      @methods[name]
+      if @methods.key?(name)
+        @methods[name]
+      elsif @superclass
+        @superclass.find_method(name)
+      end
     end
 
     def call(interpreter, arguments)
