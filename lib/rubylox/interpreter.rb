@@ -1,5 +1,6 @@
 require 'rubylox/lox_function'
 require 'rubylox/lox_class'
+require 'rubylox/environment'
 
 module Rubylox
   class Interpreter

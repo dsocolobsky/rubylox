@@ -1,22 +1,32 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "rubylox"
-require "rubylox/scanner"
-require "rubylox/expressions"
-require "rubylox/parser"
-require "rubylox/token"
-require "rubylox/interpreter"
+require 'rubylox'
+require 'rubylox/scanner'
+require 'rubylox/expressions'
+require 'rubylox/parser'
+require 'rubylox/token'
+require 'rubylox/interpreter'
+require 'rubylox/resolver'
 
-source = "print 2 + 2 * 7; \n print \"trying\";"
+target = ARGV[0]
+if target.nil?
+  puts 'Usage: rubylox <script>'
+  exit 64
+end
+source = File.read(ARGV[0])
+if source.nil? || source.empty?
+  puts 'No source file provided'
+  exit 1
+end
 
 tokens = Rubylox::Scanner.new(source).scan_tokens
 parser = Rubylox::Parser.new(tokens)
-expression = parser.parse
+statements = parser.parse
 
 interpreter = Rubylox::Interpreter.new
 
 resolver = Rubylox::Resolver.new(interpreter)
-resolver.resolve(expression)
+resolver.resolve_list_of_statements(statements)
 
-interpreter.interpret(expression)
+interpreter.interpret(statements)

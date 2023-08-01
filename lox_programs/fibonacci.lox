@@ -1,0 +1,17 @@
+// calculate fibonacci via a loop
+fun fibUpTo(n) {
+    if (n < 2) {
+        return n;
+    }
+
+    var n1 = 0;
+    var n2 = 1;
+	for (var i = 0; i <= n; i = i + 1) {
+	    var n3 = n1 + n2;
+	    n1 = n2;
+	    n2 = n3;
+	    print n1;
+	}
+}
+
+fibUpTo(20);
