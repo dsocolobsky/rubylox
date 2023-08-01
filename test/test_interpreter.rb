@@ -98,6 +98,12 @@ class TestInterpreter < Minitest::Test
     end
   end
 
+  def test_for_loop
+    assert_output(/1.0\n2.0\n3.0\n4.0\n5.0/) do
+      interpret_program('for (var a = 1; a <= 5; a = a + 1) { print a; }')
+    end
+  end
+
   def test_function_call_clock
     # Replace Time.now with a lambda that returns the fixed time
     Time.stub :now, -> { Time.at(3600) } do

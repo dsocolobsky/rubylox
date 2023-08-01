@@ -74,6 +74,7 @@ module Rubylox
     end
 
     def parse_statement
+      return parse_statement_for if match(:for)
       return parse_statement_if if match(:if)
       return parse_statement_print if match(:print)
       return parse_statement_return if match(:return)
@@ -81,6 +82,35 @@ module Rubylox
       return parse_statement_block if match(:left_brace)
 
       parse_statement_expression
+    end
+
+    def parse_statement_for
+      consume(:left_paren, "Expect '(' after 'for'")
+
+      initializer = if match(:semicolon)
+                      nil
+                    elsif match(:var)
+                      parse_variable_declaration
+                    else
+                      parse_statement_expression
+                    end
+
+      condition = expression unless peek_is?(:semicolon)
+      consume(:semicolon, "Expect ';' after loop condition")
+
+      increment = expression unless peek_is?(:right_paren)
+      consume(:right_paren, "Expect ')' after for clauses")
+
+      body = parse_statement
+
+      # Desugar the for loop into a while loop
+      body = BlockStmt.new([body, ExpressionStmt.new(increment)]) unless increment.nil?
+
+      condition = LiteralExpression.new(true) if condition.nil?
+      body = WhileStmt.new(condition, body)
+      body = BlockStmt.new([initializer, body]) unless initializer.nil?
+
+      body
     end
 
     def parse_statement_if
@@ -338,13 +368,13 @@ module Rubylox
 
       until at_end? || previous.type == :semicolon
         return if peek.type == :class ||
-          peek.type == :fun ||
-          peek.type == :var ||
-          peek.type == :for ||
-          peek.type == :if ||
-          peek.type == :while ||
-          peek.type == :print ||
-          peek.type == :return
+                  peek.type == :fun ||
+                  peek.type == :var ||
+                  peek.type == :for ||
+                  peek.type == :if ||
+                  peek.type == :while ||
+                  peek.type == :print ||
+                  peek.type == :return
 
         advance
       end

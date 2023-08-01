@@ -13,6 +13,7 @@ module Rubylox
     def parse_assignment: () -> AssignExpression
 
     def parse_statement: () -> statement
+    def parse_statement_for: () -> WhileStmt
     def parse_statement_if: () -> IfStmt
     def parse_statement_print: () -> PrintStmt
     def parse_statement_return: () -> ReturnStmt
