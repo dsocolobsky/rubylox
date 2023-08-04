@@ -28,3 +28,10 @@ This is a Ruby 3.x interpreter of the Lox programming language from
 - [ ] CLI REPL
 - [ ] Extra exercises from the book
 - [ ] Maybe extra features not in the book
+
+## Benchmarks
+I've run benchmarks against the oficial Java implementation from the book in
+my Macbook Air M1 2020. It's uuhh... pretty slow.
+![benchmarks1](./benchmarks/benchmarks_1.png)
+![benchmarks2](./benchmarks/benchmarks_2.png)
+![benchmarks_fib](./benchmarks/benchmarks_fib.png)
