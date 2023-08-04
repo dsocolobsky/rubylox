@@ -11,6 +11,12 @@ module Rubylox
       @globals = Rubylox::Environment.new
       @locals = {}
 
+      # parse STDIN to a number
+      if ARGV.length > 1
+        stdin = ARGV[1].to_f
+        @globals.define('STDIN', stdin)
+      end
+
       @globals.define('clock', Class.new(LoxCallable) do
         def self.arity
           0
